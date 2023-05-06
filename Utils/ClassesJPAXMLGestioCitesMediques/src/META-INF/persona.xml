@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_2.xsd" version="2.2">
+    <entity class="org.milaifontanals.classes.Persona" access="FIELD" metadata-complete="true">
+        <table name="persona">
+        </table>
+        <attributes>
+            <id name="nif">
+                <column name="Persona_NIF" length="9"/>     
+            </id>
+            <basic name="nom" optional="false">
+                <column name="Persona_Nom" nullable="false" length="45"/>        
+            </basic>
+            <basic name="cognom1" optional="false">
+                <column name="Persona_Cognom1" nullable="false" length="45"/>        
+            </basic>
+            <basic name="cognom2">
+                <column name="Persona_Cognom2" length="45"/>        
+            </basic>
+            <basic name="dataNaix" optional="false">
+                <column name="Persona_DataNaix" nullable="false"/>
+                <temporal>DATE</temporal>
+            </basic>
+            <basic name="adreca" optional="false">
+                <column name="Persona_Adreca" nullable="false" length="45"/>        
+            </basic>
+            <basic name="poblacio" optional="false">
+                <column name="Persona_Poblacio" nullable="false" length="45"/>        
+            </basic>
+            <basic name="sexe" optional="false">
+                <column name="Persona_Sexe" nullable="false" length="1"/>        
+            </basic>
+            <basic name="login" optional="false">
+                <column name="Persona_Login" nullable="false" length="45"/>        
+            </basic>
+            <basic name="password" optional="false">
+                <column name="Persona_Password" nullable="false" length="45"/>        
+            </basic>
+            <one-to-many name="cites" mapped-by="persona"/>
+            <one-to-one name="metge" mapped-by="metge"/>
+        </attributes>
+    </entity>
+</entity-mappings>

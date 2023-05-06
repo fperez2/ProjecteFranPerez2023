@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_2.xsd" version="2.2">
+    <entity class="org.milaifontanals.classes.Cita" access="FIELD" metadata-complete="true">        
+        <table name="cita">
+        </table>
+        <id-class class="org.milaifontanals.classes.CitaId"/>
+        <attributes>
+            <id name="codiMetge">
+                <column name="Cita_Metge_CodiEmpleat"/>       
+            </id>
+            <id name="nif">
+                <column name="Cita_Persona_NIF"/>
+            </id>
+            <id name="dataHora">
+                <column name="Cita_DataHora"/>
+            </id>
+            <basic name="informe" optional="true">
+                <column name="Cita_Informe"/>        
+            </basic>
+            <many-to-one name="metge"  optional="false">
+                <join-column name="Cita_Metge_CodiEmpleat" insertable="false" updatable="false"/>
+                <foreign-key name="fk_Cita_Metge"/>                
+                <cascade>
+                    <cascade-persist/>
+                </cascade>
+            </many-to-one>
+            <many-to-one name="persona"  optional="false">
+                <join-column name="Cita_Persona_NIF" insertable="false" updatable="false"/>
+                <foreign-key name="fk_Cita_Persona"/>                
+                <cascade>
+                    <cascade-persist/>
+                </cascade>
+            </many-to-one>
+        </attributes>
+    </entity>
+</entity-mappings>

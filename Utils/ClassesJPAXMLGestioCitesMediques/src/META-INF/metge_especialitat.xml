@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_2.xsd" version="2.2">
+    <entity class="org.milaifontanals.classes.MetgeEspecialitat" access="FIELD" metadata-complete="true">        
+        <table name="metgeespecialitat">
+        </table>
+        <id-class class="org.milaifontanals.classes.MetgeEspecialitatId"/>
+        <attributes>
+            <id name="codiMetge">
+                <column name="Metge_CodiEmpleat"/>       
+            </id>
+            <id name="codiEspecialitat">
+                <column name="Especialitat_Codi"/>
+            </id>
+            <many-to-one name="codiEmpleat"  optional="false">
+                <join-column name="Metge_codiEmpleat" insertable="false" updatable="false"/>
+                <foreign-key name="fk_Metge_Especialitat"/>                
+                <cascade>
+                    <cascade-persist/>
+                </cascade>
+            </many-to-one>
+            <many-to-one name="codi"  optional="false">
+                <join-column name="Especialitat_codi" insertable="false" updatable="false"/>
+                <foreign-key name="fk_Especialitat_Metge"/>                
+                <cascade>
+                    <cascade-persist/>
+                </cascade>
+            </many-to-one>
+        </attributes>
+    </entity>
+</entity-mappings>
