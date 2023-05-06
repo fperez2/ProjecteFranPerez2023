@@ -4,15 +4,15 @@
         <table name="metge">
         </table>
         <attributes>
-            <id name="nif">
-                <column name="Metge_NIF"/>
+            <id name="codiEmpleat">
+                <column name="Metge_CodiEmpleat"/>
             </id>
-            <basic name="codiEmpleat" optional="false">
-                <column name="Metge_CodiEmpleat" nullable="false" length="45"/>        
+            <basic name="nif" optional="false">
+                <column name="Metge_Persona_NIF" nullable="false" length="45"/>        
             </basic>
             <one-to-many name="especialitats" mapped-by="codiEmpleat"/>
             <one-to-one name ="persona" fetch="LAZY">
-                    <join-column name="Metge_NIF" insertable="false" updatable="false"/>
+                    <join-column name="Metge_Persona_NIF" insertable="false" updatable="false"/>
                     <foreign-key name="fk_Metge_Persona"/>                
                         <cascade>
                             <cascade-persist/>

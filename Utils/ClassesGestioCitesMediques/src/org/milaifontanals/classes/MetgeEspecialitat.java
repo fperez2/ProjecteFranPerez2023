@@ -16,6 +16,9 @@ public class MetgeEspecialitat implements Serializable{
     public MetgeEspecialitat(Metge codiEmpleat, Especialitat codi) {
         setCodiEmpleat(codiEmpleat);
         setCodi(codi);
+        
+        codiEmpleat.addEspecialitat(this);
+        codi.addMetge(this);
     }
 
     public Metge getCodiEmpleat() {
