@@ -44,6 +44,10 @@ public class Metge implements Serializable{
         }
         this.codiEmpleat = codiEmpleat;
     }
+    
+    public String getNom() {
+        return (this.persona.getNom() + " " + this.persona.getCognom1());
+    }
 
     @Override
     public int hashCode() {

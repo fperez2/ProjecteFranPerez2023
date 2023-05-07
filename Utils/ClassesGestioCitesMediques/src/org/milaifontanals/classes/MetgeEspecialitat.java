@@ -26,11 +26,8 @@ public class MetgeEspecialitat implements Serializable{
     }
 
     public void setCodiEmpleat(Metge codiEmpleat) {
-        if(codiEmpleat==null)
-        {
-            throw new RuntimeException("El codi d'empleat es obligatori.");
-        }
         this.codiEmpleat = codiEmpleat;
+        codiMetge = codiEmpleat.getCodiEmpleat();
     }
 
     public Especialitat getCodi() {
@@ -38,11 +35,8 @@ public class MetgeEspecialitat implements Serializable{
     }
 
     public void setCodi(Especialitat codi) {
-        if(codi==null)
-        {
-            throw new RuntimeException("El codi d'especialitat es obligatori.");
-        }
         this.codi = codi;
+        codiEspecialitat = codi.getCodi();
     }
 
     @Override

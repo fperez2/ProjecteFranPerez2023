@@ -8,103 +8,122 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import javax.swing.table.TableModel;
+import org.milaifontanals.classes.Especialitat;
+import org.milaifontanals.classes.Metge;
+import org.milaifontanals.classes.Persona;
+import org.milaifontanals.interficie.IGestorCitesMediques;
 
 public class VistaMetge extends JFrame {
-    private JTable tablaDoctores;
-    private JComboBox<String> comboBoxEspecial;
-    private DefaultTableModel modeloTablaDoctores;
-    private DefaultListModel<String> modeloListaEspecialidades;
+    private JTable tableMetges;
+    private JComboBox<String> comboBoxEspecialitats;
+    private JComboBox<String> comboBoxEspecialitats2;
+    private DefaultTableModel modelMetges;
+    private DefaultListModel<String> modelEspecialitats;
 
-    public VistaMetge() {
-        // Configuración de la ventana
-        super("Lista de médicos");
+    public VistaMetge(IGestorCitesMediques obj) {
+        //Configuracio finestra
+        super("Llista Metges");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(800, 600);
 
-        // Creación de los componentes
-        JLabel lblFiltro = new JLabel("Filtrar por especialidad:");
-        comboBoxEspecial = new JComboBox<>();
-        JButton btnMostrarDatos = new JButton("Mostrar datos del médico");
-        JButton btnEliminarEspecialidad = new JButton("Eliminar especialidad");
-        JButton btnAgregarEspecialidad = new JButton("Agregar especialidad");
-        tablaDoctores = new JTable();
-        modeloTablaDoctores = new DefaultTableModel(new Object[]{"Nombre", "Apellido"}, 0);
-        tablaDoctores.setModel(modeloTablaDoctores);
-        modeloListaEspecialidades = new DefaultListModel<>();
-        JList<String> listaEspecialidades = new JList<>(modeloListaEspecialidades);
+        // Creacio dels components
+        JLabel lblFiltre = new JLabel("Filtrar per especialitat:");
+        comboBoxEspecialitats = new JComboBox<>();
+        comboBoxEspecialitats2 = new JComboBox<>();
+        JButton btnMostrarMetge = new JButton("Mostrar dades del metge");
+        JButton btnEliminarEspecialitat = new JButton("Eliminar especialitat");
+        JButton btnAfegirEspecialitat = new JButton("Afegir especialitat");
+        tableMetges = new JTable();
+        modelMetges = new DefaultTableModel(new Object[]{"Codi", "Nom"}, 0);
+        tableMetges.setModel(modelMetges);
+        modelEspecialitats = new DefaultListModel<>();
+        JList<String> llistaEspecialitats = new JList<>(modelEspecialitats);
 
-        // Agregar componentes a la ventana
+        // Afegir components a la finestra
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
         JPanel panelSuperior = new JPanel(new FlowLayout());
-        panelSuperior.add(lblFiltro);
-        panelSuperior.add(comboBoxEspecial);
-        panelSuperior.add(btnMostrarDatos);
+        panelSuperior.add(lblFiltre);
+        panelSuperior.add(comboBoxEspecialitats);
+        panelSuperior.add(btnMostrarMetge);
         contentPane.add(panelSuperior, BorderLayout.NORTH);
-        contentPane.add(new JScrollPane(tablaDoctores), BorderLayout.CENTER);
+        contentPane.add(new JScrollPane(tableMetges), BorderLayout.CENTER);
         JPanel panelInferior = new JPanel(new GridLayout(2, 1));
-        JPanel panelBotones = new JPanel(new FlowLayout());
-        panelBotones.add(btnEliminarEspecialidad);
-        panelBotones.add(btnAgregarEspecialidad);
-        panelInferior.add(panelBotones);
-        panelInferior.add(new JScrollPane(listaEspecialidades));
+        JPanel panelBotons = new JPanel(new FlowLayout());
+        panelBotons.add(btnEliminarEspecialitat);
+        panelBotons.add(btnAfegirEspecialitat);
+        panelBotons.add(comboBoxEspecialitats2);
+        panelInferior.add(panelBotons);
+        panelInferior.add(new JScrollPane(llistaEspecialitats));
         contentPane.add(panelInferior, BorderLayout.SOUTH);
 
-        // Inicialización de datos
-//        DoctorController doctorController = new DoctorController();
-//        List<Doctor> doctores = doctorController.getDoctores();
-//        doctores.forEach(d -> modeloTablaDoctores.addRow(new Object[]{d.getNombre(), d.getApellido()}));
-//        List<String> especialidades = doctorController.getEspecialidades();
-        comboBoxEspecial.addItem("");
-//        especialidades.forEach(comboBoxEspecial::addItem);
+        // Inicializacio de dades
+        List<Metge> metges = obj.getAllMetges();
+        metges.forEach(m -> modelMetges.addRow(new Object[]{m.getCodiEmpleat(), m.getNom()}));
+        List<Especialitat> especialitats = obj.getAllEspecialitats();
+        comboBoxEspecialitats.addItem("");
+        especialitats.forEach(e -> comboBoxEspecialitats.addItem(e.getNom()));
+        especialitats.forEach(e -> comboBoxEspecialitats2.addItem(e.getNom()));
 
-        // Manejo de eventos
-        comboBoxEspecial.addActionListener(new ActionListener() {
+        //Events
+        comboBoxEspecialitats.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String especialidadSeleccionada = (String) comboBoxEspecial.getSelectedItem();
-                //List<Doctor> doctoresFiltrados = doctorController.filtrarDoctores(especialidadSeleccionada);
-                modeloTablaDoctores.setRowCount(0);
-                //doctoresFiltrados.forEach(d -> modeloTablaDoctores.addRow(new Object[]{d.getNombre(), d.getApellido()}));
+                String especialitatSeleccionada = (String) comboBoxEspecialitats.getSelectedItem();
+                List<Metge> metgesFiltrats;
+                if(especialitatSeleccionada.equals("")){
+                    metgesFiltrats = obj.getAllMetges();
+                }else{
+                    metgesFiltrats = obj.getMetgesByEspecialitat(especialitatSeleccionada); 
+                }
+                modelMetges.setRowCount(0);
+                metgesFiltrats.forEach(mf -> modelMetges.addRow(new Object[]{mf.getCodiEmpleat(), mf.getNom()}));
             }
         });
 
-        tablaDoctores.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+        tableMetges.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                int filaSeleccionada = tablaDoctores.getSelectedRow();
+                int filaSeleccionada = tableMetges.getSelectedRow();
+                TableModel model = tableMetges.getModel();
+                int codiMetgeFilaSelec = (int) model.getValueAt(filaSeleccionada, 0);
                 if (filaSeleccionada >= 0) {
-                    //Doctor doctorSeleccionado = doctores.get(filaSeleccionada);
-                    modeloListaEspecialidades.clear();
-                    //doctorSeleccionado.getEspecialidades().forEach(modeloListaEspecialidades::addElement);
+                    List<Especialitat> metgeEspecialitats = obj.getEspecialitatByMetge(codiMetgeFilaSelec);
+                    modelEspecialitats.clear();
+                    metgeEspecialitats.forEach(me -> modelEspecialitats.addElement(me.getNom()));
                 }
             }
         });
 
-        btnMostrarDatos.addActionListener(new ActionListener() {
+        btnMostrarMetge.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int filaSeleccionada = tablaDoctores.getSelectedRow();
-                if (filaSeleccionada >= 0) {
-                    //Doctor doctorSeleccionado = doctores.get(filaSeleccionada);
-                    JOptionPane.showMessageDialog(VistaMetge.this, "doctorSeleccionado", "Datos del médico", JOptionPane.INFORMATION_MESSAGE);
+                int filaSeleccionada = tableMetges.getSelectedRow();
+                TableModel model = tableMetges.getModel();
+                int codiMetgeFilaSelec = (int) model.getValueAt(filaSeleccionada, 0);
+                if (filaSeleccionada >= 0 && codiMetgeFilaSelec > 0) {
+                    Persona metgeSeleccionat = obj.getPersonaByMetge(codiMetgeFilaSelec);
+                    JOptionPane.showMessageDialog(VistaMetge.this, metgeSeleccionat, "Dades del metge", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(VistaMetge.this, "Seleccione un médico de la lista", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(VistaMetge.this, "Selecciona un metge de la llista", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
 
-        btnEliminarEspecialidad.addActionListener(new ActionListener() {
+        btnEliminarEspecialitat.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int filaSeleccionada = tablaDoctores.getSelectedRow();
+                int filaSeleccionada = tableMetges.getSelectedRow();
+                TableModel model = tableMetges.getModel();
+                int codiMetgeFilaSelec = (int) model.getValueAt(filaSeleccionada, 0);
                 if (filaSeleccionada >= 0) {
-                    int indiceEspecialidadSeleccionada = listaEspecialidades.getSelectedIndex();
+                    int indiceEspecialidadSeleccionada = llistaEspecialitats.getSelectedIndex();
                     if (indiceEspecialidadSeleccionada >= 0) {
-                        //Doctor doctorSeleccionado = doctores.get(filaSeleccionada);
-                        //String especialidadSeleccionada = doctorSeleccionado.getEspecialidades().get(indiceEspecialidadSeleccionada);
-                        //doctorController.eliminarEspecialidad(doctorSeleccionado, especialidadSeleccionada);
-                        modeloListaEspecialidades.remove(indiceEspecialidadSeleccionada);
+                        //Doctor metgeSeleccionat = doctores.get(filaSeleccionada);
+                        //String especialitatSeleccionada = metgeSeleccionat.getEspecialidades().get(indiceEspecialidadSeleccionada);
+                        //doctorController.eliminarEspecialidad(metgeSeleccionat, especialitatSeleccionada);
+                        modelEspecialitats.remove(indiceEspecialidadSeleccionada);
                     } else {
                         JOptionPane.showMessageDialog(VistaMetge.this, "Seleccione una especialidad de la lista", "Error", JOptionPane.ERROR_MESSAGE);
                     }
@@ -114,13 +133,13 @@ public class VistaMetge extends JFrame {
             }
         });
 
-        btnAgregarEspecialidad.addActionListener(new ActionListener() {
+        btnAfegirEspecialitat.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int filaSeleccionada = tablaDoctores.getSelectedRow();
+                int filaSeleccionada = tableMetges.getSelectedRow();
                 if (filaSeleccionada >= 0) {
-                    //Doctor doctorSeleccionado = doctores.get(filaSeleccionada);
-//                    String especialidadSeleccionada = (String) JOptionPane.showInputDialog(
+                    //Doctor metgeSeleccionat = doctores.get(filaSeleccionada);
+//                    String especialitatSeleccionada = (String) JOptionPane.showInputDialog(
 //                            VistaMetge.this,
 //                            "Seleccione una especialidad",
 //                            "Agregar especialidad",
@@ -129,9 +148,9 @@ public class VistaMetge extends JFrame {
 //                            especialidades.toArray(),
 //                            especialidades.get(0)
 //                    );
-//                    if (especialidadSeleccionada != null && !especialidadSeleccionada.isEmpty()) {
-//                        doctorController.agregarEspecialidad(doctorSeleccionado, especialidadSeleccionada);
-//                        modeloListaEspecialidades.addElement(especialidadSeleccionada);
+//                    if (especialitatSeleccionada != null && !especialitatSeleccionada.isEmpty()) {
+//                        doctorController.agregarEspecialidad(metgeSeleccionat, especialitatSeleccionada);
+//                        modelEspecialitats.addElement(especialitatSeleccionada);
 //                    }
                 } else {
                     JOptionPane.showMessageDialog(VistaMetge.this, "Seleccione un médico de la lista", "Error", JOptionPane.ERROR_MESSAGE);
