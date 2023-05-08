@@ -4,15 +4,18 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-public class EntradaHorari implements Serializable{    
+public class EntradaHorari implements Serializable{
+    private int codiMetge;
+    private int codiEspecialitat;
+    
     private Metge codiEmpleat;
     private Date hora;
-    private DiesSetmana diaSetmana;
+    private String diaSetmana;
     private Especialitat codi;
     
     protected EntradaHorari(){}
 
-    public EntradaHorari(Metge codiEmpleat, Date hora, DiesSetmana diaSetmana, Especialitat codi) {
+    public EntradaHorari(Metge codiEmpleat, Date hora, String diaSetmana, Especialitat codi) {
         setCodiEmpleat(codiEmpleat);
         setHora(hora);
         setDiaSetmana(diaSetmana);
@@ -43,11 +46,11 @@ public class EntradaHorari implements Serializable{
         this.hora = hora;
     }
 
-    public DiesSetmana getDiaSetmana() {
+    public String getDiaSetmana() {
         return diaSetmana;
     }
 
-    public void setDiaSetmana(DiesSetmana diaSetmana) {
+    public void setDiaSetmana(String diaSetmana) {
         if(diaSetmana==null)
         {
             throw new RuntimeException("El dia de la setmana es obligatori.");

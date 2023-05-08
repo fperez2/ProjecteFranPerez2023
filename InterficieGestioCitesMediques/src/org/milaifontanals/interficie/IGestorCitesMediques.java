@@ -7,6 +7,7 @@ import org.milaifontanals.classes.Persona;
 
 public interface IGestorCitesMediques {
     
+    Metge getMetge(int codiMetge);
     List<Metge> getAllMetges();
     List<Metge> getMetgesByEspecialitat(String especialitat);
     Persona getPersonaByMetge(int codiMetge);

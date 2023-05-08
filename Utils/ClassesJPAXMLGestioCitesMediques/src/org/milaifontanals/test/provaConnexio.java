@@ -7,6 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import org.milaifontanals.classes.Cita;
+import org.milaifontanals.classes.EntradaHorari;
 import org.milaifontanals.classes.Especialitat;
 import org.milaifontanals.classes.Metge;
 import org.milaifontanals.classes.MetgeEspecialitat;
@@ -195,37 +196,50 @@ public class provaConnexio {
 //                System.out.println("Error addEspecialitatToMetge: "+ex.getMessage()); 
 //            }
 //            
-//            //deleteEspecialitatToMetge
-//            Scanner sc = new Scanner(System.in);
-//            System.out.println("Introdueixi codimetge:");
-//            int codiMetge = 0;
-//            String especialitat = "";
-//            try {
-//                codiMetge = Integer.parseInt(sc.nextLine());
-//                System.out.println("Introdueixi especialitat:");
-//                especialitat = sc.nextLine();
-//            } catch (NumberFormatException ex) {
-//                System.out.println("Valor erroni");
-//            }
-//            try
-//            {
-//                String instruccio = "select e from Especialitat e where e.nom = :especialitat";
-//                Query q = em.createQuery(instruccio);
-//                q.setParameter("especialitat", especialitat);
-//                Especialitat esp =(Especialitat) q.getResultList().get(0);
-//
-//                Metge metge = em.find(Metge.class, codiMetge);
-//                MetgeEspecialitatId id_me = new MetgeEspecialitatId(metge.getCodiEmpleat(), esp.getCodi());
-//                MetgeEspecialitat me = em.find(MetgeEspecialitat.class, id_me);
-//                metge.removeEspecialitat(me);
-//                esp.removeMetge(me);
-//                em.getTransaction().begin();
-//                em.remove(me);
-//                em.getTransaction().commit();
-//            }catch(Exception ex)
-//            {
-//                System.out.println("Error deleteEspecialitatToMetge: "+ex.getMessage()); 
-//            }    
+            //deleteEspecialitatToMetge
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Introdueixi codimetge:");
+            int codiMetge = 0;
+            String especialitat = "";
+            try {
+                codiMetge = Integer.parseInt(sc.nextLine());
+                System.out.println("Introdueixi especialitat:");
+                especialitat = sc.nextLine();
+            } catch (NumberFormatException ex) {
+                System.out.println("Valor erroni");
+            }
+            try
+            {
+                String instruccio = "select e from Especialitat e where e.nom = :especialitat";
+                Query q = em.createQuery(instruccio);
+                q.setParameter("especialitat", especialitat);
+                Especialitat esp =(Especialitat) q.getResultList().get(0);
+
+                Metge metge = em.find(Metge.class, codiMetge);
+                MetgeEspecialitatId id_me = new MetgeEspecialitatId(metge.getCodiEmpleat(), esp.getCodi());
+                MetgeEspecialitat me = em.find(MetgeEspecialitat.class, id_me);
+                
+                //Eliminar entradahorari
+                instruccio = "select e from EntradaHorari e where e.codiEmpleat.codiEmpleat = :metge and e.codi.codi = :especialitat";
+                q = em.createQuery(instruccio);
+                q.setParameter("metge", codiMetge);
+                q.setParameter("especialitat", esp.getCodi());
+                List<EntradaHorari> enthors = q.getResultList();
+                em.getTransaction().begin();
+                if(!enthors.isEmpty()){
+                for (EntradaHorari enthor : enthors) {
+                        em.remove(enthor);
+                    }
+                }
+                metge.removeEspecialitat(me);
+                esp.removeMetge(me);
+                
+                em.remove(me);
+                em.getTransaction().commit();
+            }catch(Exception ex)
+            {
+                System.out.println("Error deleteEspecialitatToMetge: "+ex.getMessage()); 
+            }    
             
         } catch (Exception ex) {
             System.out.println("Exception: " + ex.getMessage());

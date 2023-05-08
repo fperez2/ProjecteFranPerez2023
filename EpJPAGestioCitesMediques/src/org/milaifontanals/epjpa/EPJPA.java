@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import org.milaifontanals.classes.EntradaHorari;
 import org.milaifontanals.classes.Especialitat;
 import org.milaifontanals.classes.Metge;
 import org.milaifontanals.classes.MetgeEspecialitat;
@@ -176,9 +177,21 @@ public class EPJPA implements IGestorCitesMediques{
             Metge metge = em.find(Metge.class, codiMetge);
             MetgeEspecialitatId id_me = new MetgeEspecialitatId(metge.getCodiEmpleat(), esp.getCodi());
             MetgeEspecialitat me = em.find(MetgeEspecialitat.class, id_me);
+
+            instruccio = "select e from EntradaHorari e where e.codiEmpleat.codiEmpleat = :metge and e.codi.codi = :especialitat";
+            q = em.createQuery(instruccio);
+            q.setParameter("metge", codiMetge);
+            q.setParameter("especialitat", esp.getCodi());
+            List<EntradaHorari> enthors = q.getResultList();
+            em.getTransaction().begin();
+            if(!enthors.isEmpty()){
+            for (EntradaHorari enthor : enthors) {
+                    em.remove(enthor);
+                }
+            }
             metge.removeEspecialitat(me);
             esp.removeMetge(me);
-            em.getTransaction().begin();
+
             em.remove(me);
             em.getTransaction().commit();
             return true;
@@ -219,6 +232,18 @@ public class EPJPA implements IGestorCitesMediques{
     @Override
     public void closeTransaction() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Metge getMetge(int codiMetge) {
+        try
+        {
+           Metge metge = em.find(Metge.class, codiMetge);
+           
+           return metge;
+        }catch(Exception ex){
+            throw new IGestorCitesMediquesException("Error getMetge "+ex.getMessage()); 
+        }    
     }
 
 }

@@ -70,6 +70,7 @@ public class VistaMetge extends JFrame {
         comboBoxEspecialitats.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                modelEspecialitats.clear();
                 String especialitatSeleccionada = (String) comboBoxEspecialitats.getSelectedItem();
                 List<Metge> metgesFiltrats;
                 if(especialitatSeleccionada.equals("")){
@@ -78,7 +79,9 @@ public class VistaMetge extends JFrame {
                     metgesFiltrats = obj.getMetgesByEspecialitat(especialitatSeleccionada); 
                 }
                 modelMetges.setRowCount(0);
-                metgesFiltrats.forEach(mf -> modelMetges.addRow(new Object[]{mf.getCodiEmpleat(), mf.getNom()}));
+                if(!metgesFiltrats.isEmpty()){
+                    metgesFiltrats.forEach(mf -> modelMetges.addRow(new Object[]{mf.getCodiEmpleat(), mf.getNom()}));
+                }
             }
         });
 
@@ -86,12 +89,13 @@ public class VistaMetge extends JFrame {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 int filaSeleccionada = tableMetges.getSelectedRow();
-                TableModel model = tableMetges.getModel();
-                int codiMetgeFilaSelec = (int) model.getValueAt(filaSeleccionada, 0);
                 if (filaSeleccionada >= 0) {
+                    int codiMetgeFilaSelec = (int) modelMetges.getValueAt(filaSeleccionada, 0);
                     List<Especialitat> metgeEspecialitats = obj.getEspecialitatByMetge(codiMetgeFilaSelec);
                     modelEspecialitats.clear();
+                    if(!metgeEspecialitats.isEmpty()){
                     metgeEspecialitats.forEach(me -> modelEspecialitats.addElement(me.getNom()));
+                    }
                 }
             }
         });
@@ -100,9 +104,8 @@ public class VistaMetge extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int filaSeleccionada = tableMetges.getSelectedRow();
-                TableModel model = tableMetges.getModel();
-                int codiMetgeFilaSelec = (int) model.getValueAt(filaSeleccionada, 0);
-                if (filaSeleccionada >= 0 && codiMetgeFilaSelec > 0) {
+                if (filaSeleccionada >= 0) {
+                    int codiMetgeFilaSelec = (int) modelMetges.getValueAt(filaSeleccionada, 0);
                     Persona metgeSeleccionat = obj.getPersonaByMetge(codiMetgeFilaSelec);
                     JOptionPane.showMessageDialog(VistaMetge.this, metgeSeleccionat, "Dades del metge", JOptionPane.INFORMATION_MESSAGE);
                 } else {
@@ -115,20 +118,30 @@ public class VistaMetge extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int filaSeleccionada = tableMetges.getSelectedRow();
-                TableModel model = tableMetges.getModel();
-                int codiMetgeFilaSelec = (int) model.getValueAt(filaSeleccionada, 0);
                 if (filaSeleccionada >= 0) {
-                    int indiceEspecialidadSeleccionada = llistaEspecialitats.getSelectedIndex();
-                    if (indiceEspecialidadSeleccionada >= 0) {
-                        //Doctor metgeSeleccionat = doctores.get(filaSeleccionada);
-                        //String especialitatSeleccionada = metgeSeleccionat.getEspecialidades().get(indiceEspecialidadSeleccionada);
-                        //doctorController.eliminarEspecialidad(metgeSeleccionat, especialitatSeleccionada);
-                        modelEspecialitats.remove(indiceEspecialidadSeleccionada);
+                    int codiMetgeFilaSelec = (int) modelMetges.getValueAt(filaSeleccionada, 0);
+                    int indexEspecialitatSeleccionada = llistaEspecialitats.getSelectedIndex();
+                    if (indexEspecialitatSeleccionada >= 0) {
+                        String especialitatSelec = modelEspecialitats.getElementAt(indexEspecialitatSeleccionada);
+                        boolean eliminarEspecialitat = obj.deleteEspecialitatToMetge(codiMetgeFilaSelec, especialitatSelec);
+                        modelEspecialitats.remove(indexEspecialitatSeleccionada);
+                        
+                        String especialitatSeleccionada = (String) comboBoxEspecialitats.getSelectedItem();
+                        List<Metge> metgesFiltrats;
+                        if(especialitatSeleccionada.equals("")){
+                            metgesFiltrats = obj.getAllMetges();
+                        }else{
+                            metgesFiltrats = obj.getMetgesByEspecialitat(especialitatSeleccionada); 
+                        }
+                        modelMetges.setRowCount(0);
+                        if(!metgesFiltrats.isEmpty()){
+                            metgesFiltrats.forEach(mf -> modelMetges.addRow(new Object[]{mf.getCodiEmpleat(), mf.getNom()}));
+                        }
                     } else {
-                        JOptionPane.showMessageDialog(VistaMetge.this, "Seleccione una especialidad de la lista", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(VistaMetge.this, "Selecciona una especialitat de la llista", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(VistaMetge.this, "Seleccione un médico de la lista", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(VistaMetge.this, "Selecciona un metge de la llista", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -138,20 +151,21 @@ public class VistaMetge extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int filaSeleccionada = tableMetges.getSelectedRow();
                 if (filaSeleccionada >= 0) {
-                    //Doctor metgeSeleccionat = doctores.get(filaSeleccionada);
-//                    String especialitatSeleccionada = (String) JOptionPane.showInputDialog(
-//                            VistaMetge.this,
-//                            "Seleccione una especialidad",
-//                            "Agregar especialidad",
-//                            JOptionPane.QUESTION_MESSAGE,
-//                            null,
-//                            especialidades.toArray(),
-//                            especialidades.get(0)
-//                    );
-//                    if (especialitatSeleccionada != null && !especialitatSeleccionada.isEmpty()) {
-//                        doctorController.agregarEspecialidad(metgeSeleccionat, especialitatSeleccionada);
-//                        modelEspecialitats.addElement(especialitatSeleccionada);
-//                    }
+                    int codiMetgeFilaSelec = (int) modelMetges.getValueAt(filaSeleccionada, 0);
+                    String especialitatSeleccionada = (String) comboBoxEspecialitats2.getSelectedItem();
+                    boolean asignarEspecialitat = obj.addEspecialitatToMetge(codiMetgeFilaSelec, especialitatSeleccionada);
+                    
+                    especialitatSeleccionada = (String) comboBoxEspecialitats.getSelectedItem();
+                    List<Metge> metgesFiltrats;
+                    if(especialitatSeleccionada.equals("")){
+                        metgesFiltrats = obj.getAllMetges();
+                    }else{
+                        metgesFiltrats = obj.getMetgesByEspecialitat(especialitatSeleccionada); 
+                    }
+                    modelMetges.setRowCount(0);
+                    if(!metgesFiltrats.isEmpty()){
+                        metgesFiltrats.forEach(mf -> modelMetges.addRow(new Object[]{mf.getCodiEmpleat(), mf.getNom()}));
+                    }
                 } else {
                     JOptionPane.showMessageDialog(VistaMetge.this, "Seleccione un médico de la lista", "Error", JOptionPane.ERROR_MESSAGE);
                 }

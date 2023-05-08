@@ -7,9 +7,11 @@
         <mapping-file>META-INF/metge_especialitat.xml</mapping-file>
         <mapping-file>META-INF/persona.xml</mapping-file>
         <mapping-file>META-INF/cita.xml</mapping-file>
+        <mapping-file>META-INF/entrada_horari.xml</mapping-file>
         <class>org.milaifontanals.classes.Especialitat</class>   
         <class>org.milaifontanals.classes.Metge</class>
-        <class>org.milaifontanals.classes.MetgeEspecialitat</class>     
+        <class>org.milaifontanals.classes.MetgeEspecialitat</class>
+        <class>org.milaifontanals.classes.EntradaHorari</class>     
         <class>org.milaifontanals.classes.Persona</class>
         <class>org.milaifontanals.classes.Cita</class>
        
