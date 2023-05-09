@@ -1,6 +1,7 @@
 package org.milaifontanals.classes;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -180,7 +181,23 @@ public class Persona implements Serializable{
 
     @Override
     public String toString() {
-        return "Persona{" + "nif=" + nif + ", nom=" + nom + ", cognom1=" + cognom1 + ", cognom2=" + cognom2 + ", dataNaix=" + dataNaix + ", adreca=" + adreca + ", poblacio=" + poblacio + ", sexe=" + sexe + ", login=" + login + ", password=" + password + '}';
+        String persona = "";
+        persona += "NIF: " + nif + "\n";
+        persona += "Nom: " + nom + "\n";
+        persona += "Primer Cognom: " + cognom1 + "\n";
+        if(cognom2 != null){
+        persona += "Segon Cognom: " + cognom2 + "\n";
+        } 
+        persona += "Data Naixement: " + dataNaix + "\n";
+        persona += "Adreça: " + adreca + "\n";
+        persona += "Població: " + poblacio + "\n";
+        if(sexe=='M'){
+        persona += "Sexe: Home\n";
+        }else{
+            persona += "Sexe: Dona\n";
+        }
+        
+        return persona;
     }
     
     public Boolean esMetge(){
