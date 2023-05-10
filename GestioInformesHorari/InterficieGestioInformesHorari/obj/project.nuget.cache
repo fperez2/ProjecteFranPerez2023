@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "WCIpU04aTwOi41uUAmR5X/TqQ7O/G7VJFBeiJdwk9nSzW+nrEZN28c5ClNzaiZuEs/yxdE5m0AQe2l/8QOLRQg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\franc\\Desktop\\ProjecteFranPerez2023\\ProjecteFranPerez2023\\GestioInformesHorari\\InterficieGestioInformesHorari\\InterficieGestioInformesHorari.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\franc\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\franc\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

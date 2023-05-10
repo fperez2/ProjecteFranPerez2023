@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GestioCitesMediquesClasses
+namespace GestioInformesHorariClasses
 {
-    class Cita
+    public class Cita
     {
         private int codiMetge;
         private String nif;

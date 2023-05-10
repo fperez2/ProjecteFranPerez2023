@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GestioCitesMediquesClasses
+namespace GestioInformesHorariClasses
 {
-    class EntradaHorari
+    public class EntradaHorari
     {
         private int codiMetge;
         private int codiEspecialitat;

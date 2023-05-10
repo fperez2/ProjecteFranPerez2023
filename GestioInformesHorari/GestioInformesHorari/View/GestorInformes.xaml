@@ -1,0 +1,40 @@
+﻿<Page
+    x:Class="GestioInformesHorari.GestorInformes"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:GestioInformesHorari"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <controls:DataGrid x:Name="agendaDataGrid" ItemsSource="{Binding Cites}">
+            <controls:DataGrid.Columns>
+                <controls:DataGridTextColumn Header="Hora" Binding="{Binding Hora}" />
+                <controls:DataGridTextColumn Header="Dilluns" Binding="{Binding Dia}" />
+                <controls:DataGridTextColumn Header="Dimarts" Binding="{Binding Dia}" />
+                <controls:DataGridTextColumn Header="Dimecres" Binding="{Binding Dia}" />
+                <controls:DataGridTextColumn Header="Dijous" Binding="{Binding Dia}" />
+                <controls:DataGridTextColumn Header="Divendres" Binding="{Binding Dia}" />
+                <controls:DataGridTextColumn Header="Dissabte" Binding="{Binding Dia}" />
+                <controls:DataGridTextColumn Header="Diumenge" Binding="{Binding Dia}" />
+            </controls:DataGrid.Columns>
+        </controls:DataGrid>
+
+        <Grid x:Name="detallCita" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock x:Name="pacientTextBlock" Grid.Row="0" />
+            <TextBlock x:Name="edatTextBlock" Grid.Row="1" />
+            <TextBlock x:Name="informeTextBlock" Grid.Row="2" />
+            <TextBox x:Name="informeTextBox" Grid.Row="3" Visibility="Collapsed" />
+            <Button x:Name="DesarButton" Grid.Row="3" Content="Desar" />
+        </Grid>
+    </Grid>
+</Page>

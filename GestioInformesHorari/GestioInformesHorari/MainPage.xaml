@@ -11,9 +11,9 @@
     <Grid>
         <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
             <TextBlock Text="LOGIN METGES" TextAlignment="Center" FontSize="60" Margin="0 0 0 24"/>
-            <TextBox PlaceholderText="Login" Margin="0 0 0 12" Width="200"/>
-            <PasswordBox PlaceholderText="Password" Margin="0 0 0 12" Width="200"/>
-            <Button Content="Login" Margin="0 0 0 24" Width="100" HorizontalAlignment="Center"/>
+            <TextBox x:Name="txbLogin" PlaceholderText="Login" Margin="0 0 0 12" Width="200"/>
+            <PasswordBox x:Name="txbPassword" PlaceholderText="Password" Margin="0 0 0 12" Width="200"/>
+            <Button x:Name="btnLogin" Click="btnLogin_Click" Content="Login" Margin="0 0 0 24" Width="100" HorizontalAlignment="Center"/>
             <TextBlock x:Name="txbError" FontSize="25" Margin="0 0 0 24" TextAlignment="Center" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Foreground="Red"/>
         </StackPanel>
     </Grid>

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GestioCitesMediquesClasses
+namespace GestioInformesHorariClasses
 {
-    class Metge
+    public class Metge
     {
         private String nif;
         private Persona persona;

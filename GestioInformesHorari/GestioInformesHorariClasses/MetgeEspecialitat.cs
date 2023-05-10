@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GestioCitesMediquesClasses
+namespace GestioInformesHorariClasses
 {
-    class MetgeEspecialitat
+    public class MetgeEspecialitat
     {
         private int codiMetge;
         private int codiEspecialitat;

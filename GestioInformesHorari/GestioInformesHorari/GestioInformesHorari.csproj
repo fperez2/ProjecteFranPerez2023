@@ -148,11 +148,28 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\GestorInformes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.12</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls.DataGrid">
+      <Version>7.1.3</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GestioInformesHorariBD\GestioInformesHorariBD.csproj">
+      <Project>{9f9ba1ff-cfac-49a9-a72f-42e671b64816}</Project>
+      <Name>GestioInformesHorariBD</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GestioInformesHorariClasses\GestioInformesHorariClasses.csproj">
+      <Project>{0e8df9ba-486b-45aa-86c3-08486e895e0d}</Project>
+      <Name>GestioInformesHorariClasses</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
