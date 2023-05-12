@@ -123,6 +123,14 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\UICita.xaml.cs">
+      <DependentUpon>UICita.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\FrameworkElementFactory.cs" />
+    <Compile Include="View\GestorInformes.xaml.cs">
+      <DependentUpon>GestorInformes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MyViewModel\Horari.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -147,6 +155,10 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\UICita.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\GestorInformes.xaml">
       <SubType>Designer</SubType>

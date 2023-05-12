@@ -139,6 +139,9 @@
     <AppxPackagedFile Include="C:\Users\franc\Desktop\ProjecteFranPerez2023\ProjecteFranPerez2023\GestioInformesHorari\GestioInformesHorari\bin\x86\Debug\MainPage.xbf">
       <PackagePath>MainPage.xbf</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\franc\Desktop\ProjecteFranPerez2023\ProjecteFranPerez2023\GestioInformesHorari\GestioInformesHorari\bin\x86\Debug\UI\UICita.xbf">
+      <PackagePath>UI\UICita.xbf</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\franc\Desktop\ProjecteFranPerez2023\ProjecteFranPerez2023\GestioInformesHorari\GestioInformesHorari\bin\x86\Debug\View\GestorInformes.xbf">
       <PackagePath>View\GestorInformes.xbf</PackagePath>
     </AppxPackagedFile>

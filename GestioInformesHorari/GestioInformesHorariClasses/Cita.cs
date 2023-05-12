@@ -22,6 +22,12 @@ namespace GestioInformesHorariClasses
             DataHora = dataHora;
             Informe = informe;
         }
+        public Cita(int codiMetge, string nif, DateTime dataHora)
+        {
+            CodiMetge = codiMetge;
+            NIF = nif;
+            DataHora = dataHora;
+        }
 
         public int CodiMetge { get => codiMetge; set => codiMetge = value; }
         public string NIF { get => nif; set => nif = value; }
