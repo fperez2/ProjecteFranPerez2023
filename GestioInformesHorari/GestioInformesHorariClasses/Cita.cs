@@ -15,6 +15,7 @@ namespace GestioInformesHorariClasses
         private DateTime dataHora;
         private String informe;
 
+        public Cita(){}
         public Cita(int codiMetge, string nif, DateTime dataHora, string informe)
         {
             CodiMetge = codiMetge;
@@ -49,7 +50,7 @@ namespace GestioInformesHorariClasses
 
         public override string ToString()
         {
-            return nif + "" + codiMetge.ToString() + "" + dataHora;
+            return "X";
         }
 
     }

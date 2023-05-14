@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using GestioInformesHorariBD;
 using GestioInformesHorariClasses;
 using GestioInformesHorari.View;
+using GestioInformesHorari.View.MyViewModel;
 
 namespace GestioInformesHorari
 {
@@ -32,10 +33,10 @@ namespace GestioInformesHorari
             string login = txbLogin.Text;
             string password = txbPassword.Password;
             
-            string res = epGestio.Login(login, password);
-            if (res != null)
+            int res = epGestio.Login(login, password);
+            if (res > 0)
             {
-                Frame.Navigate(typeof(GestorInformes), res);
+                Frame.Navigate(typeof(BarraNavegacio), res);
             }
             else
             {

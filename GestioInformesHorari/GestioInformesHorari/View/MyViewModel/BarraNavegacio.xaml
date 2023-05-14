@@ -1,0 +1,30 @@
+﻿<Page
+    x:Class="GestioInformesHorari.View.MyViewModel.BarraNavegacio"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:GestioInformesHorari.View.MyViewModel"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Loaded="BarraNavegacio_Loaded"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <NavigationView x:Name="nvwBarraNavegacio" ItemInvoked="NvwBarraNavegacio_ItemInvoked" 
+                        PaneDisplayMode="LeftCompact" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" IsPaneOpen="False">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Tag="Cites"  Content="Cites">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7AD;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Tag="Horari"  Content="Horari">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE70F;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+            <Frame x:Name="frmPrincipal"></Frame>
+        </NavigationView>
+    </Grid>
+</Page>

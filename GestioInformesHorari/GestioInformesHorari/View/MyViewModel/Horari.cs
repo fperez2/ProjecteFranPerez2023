@@ -63,10 +63,9 @@ namespace GestioInformesHorari.View.MyViewModel
         public static List<Horari> GenerarHorari()
         {
             var horariList = new List<Horari>();
-            Cita cita = new Cita(10, "12345678A",DateTime.Now);
             foreach (Hores h in Enum.GetValues(typeof(Hores)))
             {
-                var horari = new Horari(convertHora(h), cita, null, null, null, null, null, null);
+                var horari = new Horari(convertHora(h), null, null, null, null, null, null, null);
                 horariList.Add(horari);
             }
             

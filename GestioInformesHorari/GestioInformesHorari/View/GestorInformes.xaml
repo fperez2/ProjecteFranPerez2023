@@ -12,15 +12,26 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*" />
             <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0">
-            <controls:DataGrid x:Name="gestorInformesDataGrid" SelectionChanged="gestorInformesDataGrid_SelectionChanged" AutoGenerateColumns="False"/>
-        </StackPanel>
-        <StackPanel Grid.Column="1" VerticalAlignment="Center">
-            <Grid VerticalAlignment="Center">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="9*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <controls:DataGrid x:Name="gestorInformesDataGrid" SelectionChanged="gestorInformesDataGrid_SelectionChanged"
+                                    AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible" Grid.Column="0" Grid.Row="0"/>
+            <StackPanel  Grid.Column="0" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button x:Name="PrevBtn" Click="Previous_Click" Content="&lt;" FontSize="18" Margin="0,0,100,0"/>
+                <Button x:Name="ActualBtn" Click="Actual_Click" Content="Actual" FontSize="18" Margin="0,0,0,0"/>
+                <Button x:Name="NextBtn" Click="Next_Click" Content="&gt;" FontSize="18" Margin="100,0,0,0"/>
+            </StackPanel>
+        </Grid>
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
+            <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -28,15 +39,17 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <TextBlock Text="Pacient:" FontSize="24" Margin="0,0,10,0" Grid.Row="0" VerticalAlignment="Center" />
                 <TextBlock x:Name="PacientText" FontSize="24" Grid.Row="1" VerticalAlignment="Center" />
                 <TextBlock Text="Edat:" FontSize="24" Margin="0,0,10,0" Grid.Row="2" VerticalAlignment="Center" />
                 <TextBlock x:Name="EdatText" FontSize="24" Grid.Row="3" VerticalAlignment="Center" />
-                <TextBox x:Name="InformeText" TextWrapping="Wrap" AcceptsReturn="True" FontSize="18" Height="400" Margin="0,20,0,0" Grid.Row="4" VerticalAlignment="Center" />
-                <Button x:Name="DesarBtn" Content="Desar" FontSize="18" Margin="0,20,0,0" Grid.Row="5" HorizontalAlignment="Center" IsEnabled="False"/>
+                <TextBlock Text="Informe:" FontSize="24" Margin="0,0,10,0" Grid.Row="4" VerticalAlignment="Center" />
+                <TextBox x:Name="InformeText" TextChanged="InformeText_TextChanged" TextWrapping="Wrap" AcceptsReturn="True" FontSize="18" Height="400" Margin="0,20,0,0" Grid.Row="5" VerticalAlignment="Center"/>
+                <Button x:Name="DesarBtn" Click="Desar_Click" Content="Desar" FontSize="18" Margin="0,20,0,0" Grid.Row="6" HorizontalAlignment="Center" IsEnabled="False"/>
+                <TextBlock x:Name="DesatText" FontSize="24" Grid.Row="7" VerticalAlignment="Center" HorizontalAlignment="Center" />
             </Grid>
         </StackPanel>
-
     </Grid>
 </Page>

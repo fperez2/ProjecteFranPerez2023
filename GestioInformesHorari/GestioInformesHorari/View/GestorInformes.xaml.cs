@@ -1,5 +1,4 @@
-﻿using GestioInformesHorari.UI;
-using GestioInformesHorari.View.MyViewModel;
+﻿using GestioInformesHorari.View.MyViewModel;
 using GestioInformesHorariBD;
 using GestioInformesHorariClasses;
 using Microsoft.Toolkit.Uwp.UI.Controls;
@@ -21,6 +20,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
@@ -29,228 +29,188 @@ namespace GestioInformesHorari.View
     public sealed partial class GestorInformes : Page
     {
         private EPGestioInformesHorari epGestio = new EPGestioInformesHorari();
-        List<string> dies;
+        int codiMetge;
+        List<Horari> horari;
         public GestorInformes()
         {
             this.InitializeComponent();
         }
-
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter != null)
+            {
+                codiMetge = (int)e.Parameter;
+            }
+        }
         private void GestorInformes_Loaded(object sender, RoutedEventArgs e)
         {
-            List<Horari> horari = Horari.GenerarHorari();
+            horari = Horari.GenerarHorari();
+            List<Cita> cites = epGestio.GetCitesActualWeek(codiMetge);
+            string setmana = "actual";
 
-            // Crear un nou objecte DataTable
-            DataTable dt = new DataTable();
-
-            //Afegir la capçelera de les columnes
-            List<string> dies = CrearColumnasAmbData(dt);
-
-            UICita c = new UICita();
-
-            // Afegir les files amb les cites
-            foreach (var hor in horari)
-            {
-                DataRow row = dt.NewRow();
-                row["Hora"] = hor.Hora;
-                if (hor.Dilluns != null) { 
-                    row[dies[0]] = hor.Dilluns;
-                    row[dies[1]] = c;
-                }
-                if (hor.Dimarts != null) { row[dies[1]] = hor.Dilluns; }
-                if (hor.Dimecres != null) { row[dies[2]] = hor.Dilluns; }
-                if (hor.Dijous != null) { row[dies[3]] = hor.Dilluns; }
-                if (hor.Divendres != null) { row[dies[4]] = hor.Dilluns; }
-                if (hor.Dissabte != null) { row[dies[5]] = hor.Dilluns; }
-                if (hor.Diumenge != null) { row[dies[6]] = hor.Dilluns; }
-                dt.Rows.Add(row);
-            }
-
-            DataTemplate template = new DataTemplate();
-
-            for (int i = 0; i < dt.Columns.Count; i++)
-            {
-                if (i == 0)
-                {
-                    gestorInformesDataGrid.Columns.Add(new DataGridTextColumn()
-                    {
-                        Header = dt.Columns[i].ColumnName,
-                        Binding = new Binding { Path = new PropertyPath("[" + i.ToString() + "]") }
-
-                    });
-                }
-                else
-                {
-                    gestorInformesDataGrid.Columns.Add(new DataGridTemplateColumn()
-                    {
-                        Header = dt.Columns[i].ColumnName,
-                        CellTemplate = template
-                    });
-                }
-            }
-
-            var collection = new ObservableCollection<object>();
-            foreach (DataRow row in dt.Rows)
-            {
-                collection.Add(row);
-            }
-
-            gestorInformesDataGrid.ItemsSource = collection;
-
-            pintarColumnaAvui(gestorInformesDataGrid);
-            pintarCites(gestorInformesDataGrid);
-            pintarHoresiDies(gestorInformesDataGrid);
-            
+            Utils.GenerarDataGrid(gestorInformesDataGrid, cites, horari, setmana);
+            PrevBtn.IsEnabled = true;
+            ActualBtn.IsEnabled = false;
+            NextBtn.IsEnabled = true;
         }
 
-        private void pintarHoresiDies(DataGrid gestorInformesDataGrid)
+        private void Actual_Click(object sender, RoutedEventArgs e)
         {
-            //Estil de cela diferent
-            var estil = new Style(typeof(DataGridCell));
-            estil.Setters.Add(new Setter(DataGridCell.BackgroundProperty, new SolidColorBrush(Colors.Blue)));
+            horari = Horari.GenerarHorari();
+            List<Cita> cites = epGestio.GetCitesActualWeek(codiMetge);
+            string setmana = "actual";
 
-            // Afegim el nou estil a la columna
-            gestorInformesDataGrid.ColumnHeaderStyle = estil;
-            gestorInformesDataGrid.RowHeaderStyle = estil;
-
+            Utils.GenerarDataGrid(gestorInformesDataGrid, cites, horari, setmana);
+            PrevBtn.IsEnabled = true;
+            ActualBtn.IsEnabled = false;
+            NextBtn.IsEnabled = true;
         }
-
-        private void pintarCites(DataGrid gestorInformesDataGrid)
+        private void Previous_Click(object sender, RoutedEventArgs e)
         {
-            var estil = new Style(typeof(DataGridCell));
-            estil.Setters.Add(new Setter(DataGridCell.BackgroundProperty, new SolidColorBrush(Colors.Blue)));
+            horari = Horari.GenerarHorari();
+            List<Cita> cites = epGestio.GetCitesPreviousWeek(codiMetge);
+            string setmana = "anterior";
 
-            
-
+            Utils.GenerarDataGrid(gestorInformesDataGrid, cites, horari, setmana);
+            PrevBtn.IsEnabled = false;
+            ActualBtn.IsEnabled = true;
+            NextBtn.IsEnabled = true;
         }
 
+        private void Next_Click(object sender, RoutedEventArgs e)
+        {
+            horari = Horari.GenerarHorari();
+            List<Cita> cites = epGestio.GetCitesNextWeek(codiMetge);
+            string setmana = "seguent";
 
+            Utils.GenerarDataGrid(gestorInformesDataGrid, cites, horari, setmana);
+            PrevBtn.IsEnabled = true;
+            ActualBtn.IsEnabled = true;
+            NextBtn.IsEnabled = false;
+        }
         private void gestorInformesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
             // Obtenir l'objecte seleccionat
+            int selectedIndex = 0;
             DataRow selectedCita = (DataRow)gestorInformesDataGrid.SelectedItem;
-            int selectedIndex = gestorInformesDataGrid.CurrentColumn.DisplayIndex;
+            if(selectedCita != null)
+            {
+                selectedIndex = gestorInformesDataGrid.CurrentColumn.DisplayIndex;
+            }
 
-            Cita c = (Cita)selectedCita[1];
+            if (selectedCita != null && selectedIndex > 0 && selectedCita[selectedIndex].Equals("X"))
+            {
+                Cita c = new Cita();
+                foreach (Horari hor in horari)
+                {
+                    if (hor.Hora.Equals(selectedCita[0]))
+                    {
 
+                        switch (selectedIndex)
+                        {
+                            case 1:
+                                c = hor.Dilluns;
+                                break;
+                            case 2:
+                                c = hor.Dimarts;
+                                break;
+                            case 3:
+                                c = hor.Dimecres;
+                                break;
+                            case 4:
+                                c = hor.Dijous;
+                                break;
+                            case 5:
+                                c = hor.Divendres;
+                                break;
+                            case 6:
+                                c = hor.Dissabte;
+                                break;
+                            case 7:
+                                c = hor.Diumenge;
+                                break;
+                        }
+                    }
+                }
+                
+                string nomIdataNaix = epGestio.GetNameByNIF(c.NIF);
+                string[] dadesPersona = nomIdataNaix.Split(';');
+                DateTime dataNaix = DateTime.Parse(dadesPersona[1]);
+
+                PacientText.Text = dadesPersona[0];
+                EdatText.Text = Utils.CalcularEdat(dataNaix) + " anys";
+                InformeText.Text =  c.Informe != null ? c.Informe : "";
+                DesatText.Text = "";
+
+            }
+            else 
+            {
+                PacientText.Text = "";
+                EdatText.Text = "";
+                InformeText.Text = "";
+                DesatText.Text = "";
+            }
         }
-
-
 
         private void InformeText_TextChanged(object sender, TextChangedEventArgs e)
         {
             DesarBtn.IsEnabled = !string.IsNullOrEmpty(InformeText.Text);
+            DesatText.Text = "";
         }
-
-        private void pintarColumnaAvui(DataGrid gestorInformesDataGrid)
+        private void Desar_Click(object sender, RoutedEventArgs e)
         {
-            //Obtenim el nom de la columna
-            DateTime dataActual = DateTime.Today;
-            string dataFormatada = dataActual.ToString("dd/MM/yyyy");
-            string nomDelDia = dataActual.ToString("dddd", new CultureInfo("ca-ES"));
-            nomDelDia = char.ToUpper(nomDelDia[0]) + nomDelDia.Substring(1);
-            string nomColAvui = nomDelDia + "\n" + dataFormatada;
-
-            // Obtenim la columna corresponent
-            var colAvui = gestorInformesDataGrid.Columns.FirstOrDefault(c => c.Header.ToString() == nomColAvui);
-
-            // Verifiquem si la columna existeix
-            if (colAvui != null)
+            // Obtenir l'objecte seleccionat
+            int selectedIndex = 0;
+            DataRow selectedCita = (DataRow)gestorInformesDataGrid.SelectedItem;
+            if (selectedCita != null)
             {
-                //Estil de cela diferent
-                var estil = new Style(typeof(DataGridCell));
-                estil.Setters.Add(new Setter(DataGridCell.BackgroundProperty, new SolidColorBrush(Colors.AliceBlue)));
-
-                // Afegim el nou estil a la columna
-                colAvui.CellStyle = estil;
-            }
-        }
-
-        private List<string> CrearColumnasAmbData(DataTable dt)
-        {
-            // Agregar la primera columna con el encabezado "Hora"
-            dt.Columns.Add("Hora", typeof(string));
-
-            List<string> dies = ObtenirDatesDeLaSetmanaActual();
-
-            // Agregar las columnas restantes con los nombres de los días
-            foreach (string dia in dies)
-            {
-                dt.Columns.Add(dia, typeof(string));
-            }
-            return dies;
-        }
-
-        public static List<string> ObtenirDatesDeLaSetmanaActual()
-        {
-            List<string> dates = new List<string>();
-
-            // Obtenim la data actual y el dia de la setmana actual
-            DateTime dataActual = DateTime.Today;
-            DayOfWeek diaActual = dataActual.DayOfWeek;
-
-            // Calculem el primer dia de la setmana
-            DateTime primerDiaDeLaSetmana = dataActual.AddDays((-(int)diaActual)+1);
-
-            // Afegim les dates de cada dia de la setmana actual a la llista
-            for (int i = 0; i < 7; i++)
-            {
-                DateTime data = primerDiaDeLaSetmana.AddDays(i);
-                string dataFormatada = data.ToString("dd/MM/yyyy");
-                string nomDelDia = data.ToString("dddd", new CultureInfo("ca-ES"));
-                nomDelDia = char.ToUpper(nomDelDia[0]) + nomDelDia.Substring(1);
-                dates.Add(nomDelDia + "\n" + dataFormatada);
+                selectedIndex = gestorInformesDataGrid.CurrentColumn.DisplayIndex;
             }
 
-            return dates;
-        }
-
-        public static List<string> ObtenerFechasDeLaSemanaAnterior()
-        {
-            List<string> fechas = new List<string>();
-
-            // Obtenemos la fecha actual y el día de la semana actual
-            DateTime fechaActual = DateTime.Today;
-            DayOfWeek diaActual = fechaActual.DayOfWeek;
-
-            // Calculamos el primer día de la semana anterior
-            DateTime primerDiaDeLaSemanaAnterior = fechaActual.AddDays(-(int)diaActual - 7);
-
-            // Agregamos las fechas de cada día de la semana anterior a la lista
-            for (int i = 0; i < 7; i++)
+            if (selectedCita != null && selectedIndex > 0 && selectedCita[selectedIndex].Equals("X"))
             {
-                DateTime fecha = primerDiaDeLaSemanaAnterior.AddDays(i);
-                string fechaFormateada = fecha.ToString("dd/MM");
-                string nombreDelDia = fecha.ToString("dddd", new CultureInfo("es-ES"));
-                fechas.Add(nombreDelDia + " " + fechaFormateada);
+                Cita c = new Cita();
+                foreach (Horari hor in horari)
+                {
+                    if (hor.Hora.Equals(selectedCita[0]))
+                    {
+
+                        switch (selectedIndex)
+                        {
+                            case 1:
+                                c = hor.Dilluns;
+                                break;
+                            case 2:
+                                c = hor.Dimarts;
+                                break;
+                            case 3:
+                                c = hor.Dimecres;
+                                break;
+                            case 4:
+                                c = hor.Dijous;
+                                break;
+                            case 5:
+                                c = hor.Divendres;
+                                break;
+                            case 6:
+                                c = hor.Dissabte;
+                                break;
+                            case 7:
+                                c = hor.Diumenge;
+                                break;
+                        }
+                    }
+                }
+
+                if ((c.Informe == null || !c.Informe.Equals(InformeText.Text)) && Utils.Ultimes48Horas(c.DataHora)) 
+                {
+                    c.Informe = InformeText.Text;
+                    epGestio.UpdateInformeCita(c);
+                    DesatText.Text = "Desat!";
+                }
+                if (c.Informe != null && c.Informe.Equals(InformeText.Text)) { DesatText.Text = "Aquest informe ja esta desat!"; }
+                if (!Utils.Ultimes48Horas(c.DataHora)) { DesatText.Text = "Aquest informe no es pot editar!"; }
             }
-
-            return fechas;
         }
-
-        public static List<string> ObtenerFechasDeLaSemanaSiguiente()
-        {
-            List<string> fechas = new List<string>();
-
-            // Obtenemos la fecha actual y el día de la semana actual
-            DateTime fechaActual = DateTime.Today;
-            DayOfWeek diaActual = fechaActual.DayOfWeek;
-
-            // Calculamos el primer día de la semana siguiente
-            DateTime primerDiaDeLaSemanaSiguiente = fechaActual.AddDays(-(int)diaActual + 7);
-
-            // Agregamos las fechas de cada día de la semana siguiente a la lista
-            for (int i = 0; i < 7; i++)
-            {
-                DateTime fecha = primerDiaDeLaSemanaSiguiente.AddDays(i);
-                string fechaFormateada = fecha.ToString("dd/MM");
-                string nombreDelDia = fecha.ToString("dddd", new CultureInfo("es-ES"));
-                fechas.Add(nombreDelDia + " " + fechaFormateada);
-            }
-
-            return fechas;
-        }
-
-
     }
 }
