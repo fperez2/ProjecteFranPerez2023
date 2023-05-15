@@ -38,8 +38,12 @@ namespace GestioInformesHorari.View
         {
             horari = Horari.GenerarHorari();
             List<Especialitat> especialitats = epGestio.GetEspecialitats(codiMetge);
+            DataTemplate dataTemp = (DataTemplate) this.Resources["comboBoxTemplate"];
+            Grid gridTemplate = (Grid)dataTemp.LoadContent();
+            ComboBox comboBoxEspecialitats = (ComboBox)gridTemplate.FindName("comboBoxEspecialitats");
+            comboBoxEspecialitats.ItemsSource = especialitats;
 
-            Utils.GenerarComboBoxDataGrid(gestorHorariDataGrid, horari, especialitats);
+            Utils.GenerarComboBoxDataGrid(gestorHorariDataGrid, horari, especialitats, dataTemp);
 
         }
 

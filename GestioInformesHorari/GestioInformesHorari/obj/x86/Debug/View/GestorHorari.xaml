@@ -8,9 +8,16 @@
     mc:Ignorable="d"
                                  
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    <Page.Resources>
+        <DataTemplate x:Key="comboBoxTemplate">
+            <Grid>
+                <ComboBox x:Name="comboBoxEspecialitats" Width="200" ItemsSource="{Binding Especialitat}"/>
+            </Grid>
+        </DataTemplate>
+      
+    </Page.Resources>
     <Grid>
-        <controls:DataGrid x:ConnectionId='2' x:Name="gestorHorariDataGrid"                                                         
+        <controls:DataGrid x:ConnectionId='4' x:Name="gestorHorariDataGrid"                                                         
                                     AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible" Grid.Column="0" Grid.Row="0"/>
     </Grid>
 </Page>

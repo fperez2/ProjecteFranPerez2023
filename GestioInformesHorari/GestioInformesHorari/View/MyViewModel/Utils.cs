@@ -84,7 +84,7 @@ namespace GestioInformesHorari.View.MyViewModel
             if (setmana.Equals("actual")) { pintarColumnaAvui(gestorInformesDataGrid); }
         }
 
-        public static void GenerarComboBoxDataGrid(DataGrid gestorHorariDataGrid, List<Horari> horari, List<Especialitat> especialitats)
+        public static void GenerarComboBoxDataGrid(DataGrid gestorHorariDataGrid, List<Horari> horari, List<Especialitat> especialitats, DataTemplate comboBoxTemplate)
         {
             //Netejar el grid
             gestorHorariDataGrid.Columns.Clear();
@@ -95,21 +95,35 @@ namespace GestioInformesHorari.View.MyViewModel
             //Afegir la capçelera de les columnes
             List<string> dies = CrearColumnasAmbDiesSetmana(dt);
 
-            Especialitat e = new Especialitat(100, "Prova");
             // Afegir les files amb els comboBox
             foreach (var hor in horari)
             {
                 DataRow row = dt.NewRow();
                 row["Hora"] = hor.Hora;
-                row[dies[0]] = e;
-                row[dies[1]] = e;
-                row[dies[2]] = e;
-                row[dies[3]] = e;
-                row[dies[4]] = e;
-                row[dies[5]] = e;
-                row[dies[6]] = e;
+                //row[dies[0]] = comboBoxEspecialitats;
+                //row[dies[1]] = comboBoxEspecialitats;
+                //row[dies[2]] = comboBoxEspecialitats;
+                //row[dies[3]] = comboBoxEspecialitats;
+                //row[dies[4]] = comboBoxEspecialitats;
+                //row[dies[5]] = comboBoxEspecialitats;
+                //row[dies[6]] = comboBoxEspecialitats;
                 dt.Rows.Add(row);
             }
+
+            ////Afegir llista al comboBox
+            //Grid gridTemplate = (Grid)comboBoxTemplate.LoadContent();
+            //ComboBox comboBoxEspecialitats = (ComboBox)gridTemplate.FindName("comboBoxEspecialitats");
+            //comboBoxEspecialitats.ItemsSource = especialitats;
+            //comboBoxEspecialitats.DisplayMemberPath = "nom"; // El texto de cada opción se muestra usando la propiedad Nombre
+            //comboBoxEspecialitats.SelectedValuePath = "codi"; // El valor seleccionado de cada opción se almacena usando la propiedad Id
+
+            //comboBoxTemplate = comboBoxEspecialitats.SelectionBoxItemTemplate;
+
+            //foreach (Especialitat esp in especialitats)
+            //{
+            //    comboBoxEspecialitats.Items.Add(esp.ToString());
+            //}
+
 
             //Crear les columnes
             for (int i = 0; i < dt.Columns.Count; i++)
@@ -125,11 +139,13 @@ namespace GestioInformesHorari.View.MyViewModel
                 }
                 else
                 {
-                    gestorHorariDataGrid.Columns.Add(new DataGridComboBoxColumn()
+                    gestorHorariDataGrid.Columns.Add(new DataGridTemplateColumn()
                     {
                         Header = dt.Columns[i].ColumnName,
-                        ItemsSource = especialitats,
-                        Binding = new Binding { Path = new PropertyPath("[" + i.ToString() + "]") }
+                        CellTemplate = comboBoxTemplate,
+                        Width = DataGridLength.Auto
+
+                        //Binding = new Binding { Path = new PropertyPath("[" + i.ToString() + "]") }
 
                     });
                 }
@@ -142,7 +158,7 @@ namespace GestioInformesHorari.View.MyViewModel
                 rows.Add(row);
             }
 
-            //gestorHorariDataGrid.ItemsSource = rows;
+            gestorHorariDataGrid.ItemsSource = rows;
 
         }
 
