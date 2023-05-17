@@ -84,105 +84,14 @@ namespace GestioInformesHorari.View.MyViewModel
             if (setmana.Equals("actual")) { pintarColumnaAvui(gestorInformesDataGrid); }
         }
 
-        public static void GenerarComboBoxDataGrid(DataGrid gestorHorariDataGrid, List<Horari> horari, List<Especialitat> especialitats, DataTemplate comboBoxTemplate)
+        public static List<FilaDataGrid> GenerarLlistaEspecialitats(List<Horari> horari, List<FilaDataGrid> dades, List<Especialitat> especialitats)
         {
-            //Netejar el grid
-            gestorHorariDataGrid.Columns.Clear();
-
-            // Crear un nou objecte DataTable
-            DataTable dt = new DataTable();
-
-            //Afegir la capçelera de les columnes
-            List<string> dies = CrearColumnasAmbDiesSetmana(dt);
-
-            // Afegir les files amb els comboBox
-            foreach (var hor in horari)
+            foreach (Horari hor in horari)
             {
-                DataRow row = dt.NewRow();
-                row["Hora"] = hor.Hora;
-                //row[dies[0]] = comboBoxEspecialitats;
-                //row[dies[1]] = comboBoxEspecialitats;
-                //row[dies[2]] = comboBoxEspecialitats;
-                //row[dies[3]] = comboBoxEspecialitats;
-                //row[dies[4]] = comboBoxEspecialitats;
-                //row[dies[5]] = comboBoxEspecialitats;
-                //row[dies[6]] = comboBoxEspecialitats;
-                dt.Rows.Add(row);
+                FilaDataGrid fila = new FilaDataGrid(hor.Hora, especialitats, especialitats[0], especialitats[0], especialitats[0], especialitats[0], especialitats[0], especialitats[0], especialitats[0]);
+                dades.Add(fila);
             }
-
-            ////Afegir llista al comboBox
-            //Grid gridTemplate = (Grid)comboBoxTemplate.LoadContent();
-            //ComboBox comboBoxEspecialitats = (ComboBox)gridTemplate.FindName("comboBoxEspecialitats");
-            //comboBoxEspecialitats.ItemsSource = especialitats;
-            //comboBoxEspecialitats.DisplayMemberPath = "nom"; // El texto de cada opción se muestra usando la propiedad Nombre
-            //comboBoxEspecialitats.SelectedValuePath = "codi"; // El valor seleccionado de cada opción se almacena usando la propiedad Id
-
-            //comboBoxTemplate = comboBoxEspecialitats.SelectionBoxItemTemplate;
-
-            //foreach (Especialitat esp in especialitats)
-            //{
-            //    comboBoxEspecialitats.Items.Add(esp.ToString());
-            //}
-
-
-            //Crear les columnes
-            for (int i = 0; i < dt.Columns.Count; i++)
-            {
-                if (i == 0)
-                {
-                    gestorHorariDataGrid.Columns.Add(new DataGridTextColumn()
-                    {
-                        Header = dt.Columns[i].ColumnName,
-                        Binding = new Binding { Path = new PropertyPath("[" + i.ToString() + "]") }
-
-                    });
-                }
-                else
-                {
-                    gestorHorariDataGrid.Columns.Add(new DataGridTemplateColumn()
-                    {
-                        Header = dt.Columns[i].ColumnName,
-                        CellTemplate = comboBoxTemplate,
-                        Width = DataGridLength.Auto
-
-                        //Binding = new Binding { Path = new PropertyPath("[" + i.ToString() + "]") }
-
-                    });
-                }
-            }
-
-            //Ficar-ho tot al datagrid
-            var rows = new ObservableCollection<object>();
-            foreach (DataRow row in dt.Rows)
-            {
-                rows.Add(row);
-            }
-
-            gestorHorariDataGrid.ItemsSource = rows;
-
-        }
-
-        private static List<string> CrearColumnasAmbDiesSetmana(DataTable dt)
-        {
-            // Agregar la primera columna con el encabezado "Hora"
-            dt.Columns.Add("Hora", typeof(string));
-
-            List<string> dies = new List<string>();
-
-            dies.Add("Dilluns");
-            dies.Add("Dimarts");
-            dies.Add("Dimecres");
-            dies.Add("Dijous");
-            dies.Add("Divendres");
-            dies.Add("Dissabte");
-            dies.Add("Diumenge");
-
-            // Agregar las columnas restantes con los nombres de los días
-            foreach (string dia in dies)
-            {
-                dt.Columns.Add(dia, typeof(string));
-            }
-            return dies;
+            return dades;
         }
 
         private static void AfegirCites(List<Cita> cites, List<Horari> horari, string setmana)

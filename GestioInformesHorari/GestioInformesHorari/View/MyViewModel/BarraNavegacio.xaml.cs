@@ -52,7 +52,7 @@ namespace GestioInformesHorari.View.MyViewModel
                     break;
 
             }
-            frmPrincipal.Navigate(t);
+            frmPrincipal.Navigate(t, codiMetge);
         }
 
     }

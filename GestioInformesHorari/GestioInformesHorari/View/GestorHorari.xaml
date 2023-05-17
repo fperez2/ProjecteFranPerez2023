@@ -8,16 +8,86 @@
     mc:Ignorable="d"
     Loaded="GestorHoraris_Loaded"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <Page.Resources>
-        <DataTemplate x:Key="comboBoxTemplate">
-            <Grid>
-                <ComboBox x:Name="comboBoxEspecialitats" Width="200" ItemsSource="{Binding Especialitat}"/>
-            </Grid>
-        </DataTemplate>
-      
-    </Page.Resources>
+
     <Grid>
-        <controls:DataGrid x:Name="gestorHorariDataGrid" SelectionChanged="gestorHorariDataGrid_SelectionChanged"
-                                    AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible" Grid.Column="0" Grid.Row="0"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="95*"/>
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <TextBlock Text="Horari setmanal d'especialitats del metge: " FontSize="24"/>
+            <TextBlock x:Name="NomText" FontSize="24"/>
+        </StackPanel>
+        <Button Content="DESAR" Click="Desar_Click" Margin="0, 0, 50, 0" HorizontalAlignment="Right"/>
+        <controls:DataGrid x:Name="gestorHorariDataGrid"
+                                    AutoGenerateColumns="false" VerticalScrollBarVisibility="Visible" Grid.Row="1">
+            <controls:DataGrid.Columns>
+                <controls:DataGridTextColumn Header="Hora" Binding='{Binding Hora}'/>
+                <controls:DataGridTemplateColumn Header ="Dilluns">
+                    <controls:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox x:Name="comboBoxEspecialitats" Width="200" 
+                                      ItemsSource='{Binding Especialitats}'
+                                      SelectedItem='{Binding Dilluns, Mode=TwoWay}'/>
+                        </DataTemplate>
+                    </controls:DataGridTemplateColumn.CellTemplate>
+                </controls:DataGridTemplateColumn>
+                <controls:DataGridTemplateColumn Header ="Dimarts">
+                    <controls:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox x:Name="comboBoxEspecialitats" Width="200" 
+                                      ItemsSource='{Binding Especialitats}'
+                                      SelectedItem='{Binding Dimarts, Mode=TwoWay}'/>
+                        </DataTemplate>
+                    </controls:DataGridTemplateColumn.CellTemplate>
+                </controls:DataGridTemplateColumn>
+                <controls:DataGridTemplateColumn Header ="Dimecres">
+                    <controls:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox x:Name="comboBoxEspecialitats" Width="200" 
+                                      ItemsSource='{Binding Especialitats}'
+                                      SelectedItem='{Binding Dimecres, Mode=TwoWay}'/>
+                        </DataTemplate>
+                    </controls:DataGridTemplateColumn.CellTemplate>
+                </controls:DataGridTemplateColumn>
+                <controls:DataGridTemplateColumn Header ="Dijous">
+                    <controls:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox x:Name="comboBoxEspecialitats" Width="200" 
+                                      ItemsSource='{Binding Especialitats}'
+                                      SelectedItem='{Binding Dijous, Mode=TwoWay}'/>
+                        </DataTemplate>
+                    </controls:DataGridTemplateColumn.CellTemplate>
+                </controls:DataGridTemplateColumn>
+                <controls:DataGridTemplateColumn  Header ="Divendres">
+                    <controls:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox x:Name="comboBoxEspecialitats" Width="200" 
+                                      ItemsSource='{Binding Especialitats}'
+                                      SelectedItem='{Binding Divendres, Mode=TwoWay}'/>
+                        </DataTemplate>
+                    </controls:DataGridTemplateColumn.CellTemplate>
+                </controls:DataGridTemplateColumn>
+                <controls:DataGridTemplateColumn Header ="Dissabte">
+                    <controls:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox x:Name="comboBoxEspecialitats" Width="200" 
+                                      ItemsSource='{Binding Especialitats}'
+                                      SelectedItem='{Binding Dissabte, Mode=TwoWay}'/>
+                        </DataTemplate>
+                    </controls:DataGridTemplateColumn.CellTemplate>
+                </controls:DataGridTemplateColumn>
+                <controls:DataGridTemplateColumn Header ="Diumenge">
+                    <controls:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox x:Name="comboBoxEspecialitats" Width="200" 
+                                      ItemsSource='{Binding Especialitats}'
+                                      SelectedItem='{Binding Diumenge, Mode=TwoWay}'/>
+                        </DataTemplate>
+                    </controls:DataGridTemplateColumn.CellTemplate>
+                </controls:DataGridTemplateColumn>
+            </controls:DataGrid.Columns>
+        </controls:DataGrid>
+        
     </Grid>
 </Page>

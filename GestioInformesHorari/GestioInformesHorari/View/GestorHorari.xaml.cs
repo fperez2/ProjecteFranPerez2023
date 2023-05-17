@@ -23,6 +23,16 @@ namespace GestioInformesHorari.View
         private EPGestioInformesHorari epGestio = new EPGestioInformesHorari();
         int codiMetge;
         List<Horari> horari;
+        List<FilaDataGrid> dades;
+
+        public List<Especialitat> Especialitats
+        {
+            get { return (List<Especialitat>)GetValue(EspecialitatsProperty); }
+            set { SetValue(EspecialitatsProperty, value); }
+        }
+        public static readonly DependencyProperty EspecialitatsProperty =
+            DependencyProperty.Register("Especialitats", typeof(List<Especialitat>), typeof(GestorHorari), new PropertyMetadata(new List<Especialitat>()));
+
         public GestorHorari()
         {
             this.InitializeComponent();
@@ -37,17 +47,17 @@ namespace GestioInformesHorari.View
         private void GestorHoraris_Loaded(object sender, RoutedEventArgs e)
         {
             horari = Horari.GenerarHorari();
-            List<Especialitat> especialitats = epGestio.GetEspecialitats(codiMetge);
-            DataTemplate dataTemp = (DataTemplate) this.Resources["comboBoxTemplate"];
-            Grid gridTemplate = (Grid)dataTemp.LoadContent();
-            ComboBox comboBoxEspecialitats = (ComboBox)gridTemplate.FindName("comboBoxEspecialitats");
-            comboBoxEspecialitats.ItemsSource = especialitats;
-
-            Utils.GenerarComboBoxDataGrid(gestorHorariDataGrid, horari, especialitats, dataTemp);
+            Especialitats = epGestio.GetEspecialitats(codiMetge);
+            dades = new List<FilaDataGrid>();
+            dades = Utils.GenerarLlistaEspecialitats(horari, dades, Especialitats);
+            gestorHorariDataGrid.ItemsSource = dades;
 
         }
 
-        private void gestorHorariDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        { }
+        private void Desar_Click(object sender, RoutedEventArgs e)
+        {
+
+            int i=0;
+        }
     }
 }

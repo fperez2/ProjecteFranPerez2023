@@ -55,19 +55,19 @@ namespace GestioInformesHorariBD
                         using (DbCommand consulta = connexio.CreateCommand())
                         {
 
-                            consulta.CommandText = $@"select e.* from Especialitat e
+                            consulta.CommandText = $@"select * from Especialitat e
                                                     join MetgeEspecialitat me on me.Especialitat_Codi = e.Especialitat_Codi
-                                                    where me.Metge_CodiEmpleat = @codiMetge;";
+                                                    where me.Metge_CodiEmpleat = @codiMetge";
                             DBUtil.crearParametre(consulta, "@codiMetge", codiMetge, DbType.Int32);
                             DbDataReader resposta = consulta.ExecuteReader();
 
                             List<Especialitat> especialitats = new List<Especialitat>();
-                            Especialitat ex = new Especialitat(100, "Prova");
-                            especialitats.Add(ex);
+                            Especialitat nd = new Especialitat(0, "N/D");
+                            especialitats.Add(nd);
                             while (resposta.Read())
                             {
-                                int codi = resposta.GetInt32(resposta.GetOrdinal("Especilitat_Codi"));
-                                string nom = resposta.GetString(resposta.GetOrdinal("Especilitat_Nom"));
+                                int codi = resposta.GetInt32(resposta.GetOrdinal("Especialitat_Codi"));
+                                string nom = resposta.GetString(resposta.GetOrdinal("Especialitat_Nom"));
                                 Especialitat e = new Especialitat(codi, nom);
                                 especialitats.Add(e);
                             }
