@@ -24,7 +24,7 @@ namespace GestioInformesHorari.View
         int codiMetge;
         List<Horari> horari;
         List<FilaDataGrid> dades;
-
+        List<EntradaHorari> horariMetge;
         public List<Especialitat> Especialitats
         {
             get { return (List<Especialitat>)GetValue(EspecialitatsProperty); }
@@ -47,9 +47,10 @@ namespace GestioInformesHorari.View
         private void GestorHoraris_Loaded(object sender, RoutedEventArgs e)
         {
             horari = Horari.GenerarHorari();
+            horariMetge = epGestio.GetHorari(codiMetge);
             Especialitats = epGestio.GetEspecialitats(codiMetge);
             dades = new List<FilaDataGrid>();
-            dades = Utils.GenerarLlistaEspecialitats(horari, dades, Especialitats);
+            dades = Utils.GenerarLlistaEspecialitats(horari, dades, Especialitats, horariMetge);
             gestorHorariDataGrid.ItemsSource = dades;
 
         }

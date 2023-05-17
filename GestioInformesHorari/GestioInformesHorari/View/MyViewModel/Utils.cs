@@ -84,14 +84,82 @@ namespace GestioInformesHorari.View.MyViewModel
             if (setmana.Equals("actual")) { pintarColumnaAvui(gestorInformesDataGrid); }
         }
 
-        public static List<FilaDataGrid> GenerarLlistaEspecialitats(List<Horari> horari, List<FilaDataGrid> dades, List<Especialitat> especialitats)
+        public static List<FilaDataGrid> GenerarLlistaEspecialitats(List<Horari> horari, List<FilaDataGrid> dades, List<Especialitat> especialitats, List<EntradaHorari> horariMetge)
         {
+            Especialitat dilluns = new Especialitat();
+            Especialitat dimarts = new Especialitat();
+            Especialitat dimecres = new Especialitat();
+            Especialitat dijous = new Especialitat();
+            Especialitat divendres = new Especialitat();
+            Especialitat dissabte = new Especialitat();
+            Especialitat diumenge = new Especialitat();
             foreach (Horari hor in horari)
             {
-                FilaDataGrid fila = new FilaDataGrid(hor.Hora, especialitats, especialitats[0], especialitats[0], especialitats[0], especialitats[0], especialitats[0], especialitats[0], especialitats[0]);
+                dilluns = especialitats[0];
+                dimarts = especialitats[0];
+                dimecres = especialitats[0];
+                dijous = especialitats[0];
+                divendres = especialitats[0];
+                dissabte = especialitats[0];
+                diumenge = especialitats[0];
+
+                foreach (EntradaHorari eh in horariMetge) 
+                {
+
+                    TimeSpan horaEH = eh.Hora.TimeOfDay;
+                    int hores = horaEH.Hours;
+                    int minuts = horaEH.Minutes;
+                    string shores = hores.ToString();
+                    string sminuts = minuts.ToString();
+
+                    if (minuts != 30) 
+                    {
+                        sminuts = "00";                    
+                    }
+                    string hora = shores + ":" + sminuts;
+
+                    if (hora.Equals(hor.Hora))
+                    {
+                        switch (eh.DiaSetmana)
+                        {
+                            case "Dilluns":
+                                dilluns = comprovaEspecilitat(especialitats, eh.CodiEspecialitat);
+                                break;
+                            case "Dimarts":
+                                dimarts = comprovaEspecilitat(especialitats, eh.CodiEspecialitat);
+                                break;
+                            case "Dimecres":
+                                dimecres = comprovaEspecilitat(especialitats, eh.CodiEspecialitat);
+                                break;
+                            case "Dijous":
+                                dijous = comprovaEspecilitat(especialitats, eh.CodiEspecialitat);
+                                break;
+                            case "Divendres":
+                                divendres = comprovaEspecilitat(especialitats, eh.CodiEspecialitat);
+                                break;
+                            case "Dissabte":
+                                dissabte = comprovaEspecilitat(especialitats, eh.CodiEspecialitat);
+                                break;
+                            case "Diumenge":
+                                diumenge = comprovaEspecilitat(especialitats, eh.CodiEspecialitat);
+                                break;
+                        }
+                    }
+                }
+                FilaDataGrid fila = new FilaDataGrid(hor.Hora, especialitats, dilluns, dimarts, dimecres, dijous, divendres, dissabte, diumenge);
                 dades.Add(fila);
             }
             return dades;
+        }
+
+        private static Especialitat comprovaEspecilitat(List<Especialitat> especialitats, int codiEspecialitat)
+        {
+            Especialitat esp = null;
+            foreach (Especialitat e in especialitats)
+            {
+                if (e.Codi == codiEspecialitat) { esp = e; }
+            }
+            return esp;
         }
 
         private static void AfegirCites(List<Cita> cites, List<Horari> horari, string setmana)

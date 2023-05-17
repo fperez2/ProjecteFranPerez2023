@@ -13,13 +13,13 @@ namespace GestioInformesHorari.View.MyViewModel
         {
             Hora = hora;
             Especialitats = especialitats;
-            Dilluns = especialitats[0];
-            Dimarts = especialitats[0];
-            Dimecres = especialitats[0];
-            Dijous = especialitats[0];
-            Divendres = especialitats[0];
-            Dissabte = especialitats[0];
-            Diumenge = especialitats[0];
+            Dilluns = dilluns;
+            Dimarts = dimarts;
+            Dimecres = dimecres;
+            Dijous = dijous;
+            Divendres = divendres;
+            Dissabte = dissabte;
+            Diumenge = diumenge;
         }
 
         public String Hora { get; set; }

@@ -363,5 +363,46 @@ namespace GestioInformesHorariBD
                 }
             }
         }
+
+        public List<EntradaHorari> GetHorari(int codiMetge)
+        {
+            try
+            {
+                using (MyDBContext context = new MyDBContext())
+                {
+                    using (var connexio = context.Database.GetDbConnection())
+                    {
+                        connexio.Open();
+
+                        using (DbCommand consulta = connexio.CreateCommand())
+                        {
+
+                            consulta.CommandText = $@"select * from EntradaHorari e
+                                                                    where e.Metge_CodiEmpleat = @codiMetge and e.Especialitat_Codi is not null";
+                            DBUtil.crearParametre(consulta, "@codiMetge", codiMetge, DbType.Int32);
+
+                            DbDataReader resposta = consulta.ExecuteReader();
+
+                           List<EntradaHorari> horariMetge = new List<EntradaHorari>();
+                            EntradaHorari eh = null;
+                            while (resposta.Read())
+                            {
+                                int codiEsp = resposta.GetInt32(resposta.GetOrdinal("Especialitat_Codi"));
+                                String diaSetmana = resposta.GetString(resposta.GetOrdinal("EntradaHorari_DiaSetmana"));
+                                DateTime hora = resposta.GetDateTime(resposta.GetOrdinal("EntradaHorari_Hora"));
+                                eh = new EntradaHorari(codiMetge, hora, diaSetmana, codiEsp);
+                                horariMetge.Add(eh);
+                            }
+                            return horariMetge;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+          return null;
+        }
     }
 }

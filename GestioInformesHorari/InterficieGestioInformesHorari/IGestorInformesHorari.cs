@@ -14,5 +14,6 @@ namespace InterficieGestioInformesHorari
         List<Cita> GetCitesNextWeek(int codiMetge);
         void UpdateInformeCita(Cita cita);
         List<Especialitat> GetEspecialitats(int codiMetge);
+        List<EntradaHorari> GetHorari(int codiMetge);
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,10 +16,16 @@ namespace GestioInformesHorariClasses
         private String diaSetmana;
         private Especialitat codi;
 
-        public EntradaHorari(int codiMetge, int codiEspecialitat, DateTime hora, String diaSetmana)
+        public EntradaHorari(int codiMetge, DateTime hora, string diaSetmana, int codiEspecialitat)
         {
             CodiMetge = codiMetge;
             CodiEspecialitat = codiEspecialitat;
+            Hora = hora;
+            DiaSetmana = diaSetmana;
+        }
+        public EntradaHorari(int codiMetge, DateTime hora, string diaSetmana)
+        {
+            CodiMetge = codiMetge;
             Hora = hora;
             DiaSetmana = diaSetmana;
         }

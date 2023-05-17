@@ -11,7 +11,7 @@ namespace GestioInformesHorariClasses
         private int codi;
         private String nom;
 
-
+        public Especialitat(){}
         public Especialitat(int codi, string nom)
         {
             Codi = codi;
