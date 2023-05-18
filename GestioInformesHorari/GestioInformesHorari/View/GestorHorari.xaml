@@ -14,12 +14,13 @@
             <RowDefinition Height="5*"/>
             <RowDefinition Height="95*"/>
         </Grid.RowDefinitions>
-        <StackPanel>
+        <StackPanel Orientation="Horizontal">
             <TextBlock Text="Horari setmanal d'especialitats del metge: " FontSize="24"/>
-            <TextBlock x:Name="NomText" FontSize="24"/>
+            <TextBlock x:Name="NomText" FontSize="24" Margin="10,0,0,0"/>
         </StackPanel>
+        <TextBlock x:Name="DesatText" FontSize="24" Margin="0,0,200,0" HorizontalAlignment="Right"/>
         <Button Content="DESAR" Click="Desar_Click" Margin="0, 0, 50, 0" HorizontalAlignment="Right"/>
-        <controls:DataGrid x:Name="gestorHorariDataGrid"
+        <controls:DataGrid x:Name="gestorHorariDataGrid" SelectionChanged="gestorHorariDataGrid_SelectionChanged"
                                     AutoGenerateColumns="false" VerticalScrollBarVisibility="Visible" Grid.Row="1">
             <controls:DataGrid.Columns>
                 <controls:DataGridTextColumn Header="Hora" Binding='{Binding Hora}'/>

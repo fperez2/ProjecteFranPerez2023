@@ -48,7 +48,6 @@
       <RootProperty Name="Margin" />
       <RootProperty Name="Width" />
       <RootProperty Name="Text" />
-      <RootProperty Name="TextWrapping" />
       <RootProperty Name="AcceptsReturn" />
       <RootProperty Name="FontSize" />
       <RootProperty Name="Height" />

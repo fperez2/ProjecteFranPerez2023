@@ -23,6 +23,7 @@ namespace GestioInformesHorari.View
         private EPGestioInformesHorari epGestio = new EPGestioInformesHorari();
         int codiMetge;
         List<Horari> horari;
+        List<FilaDataGrid> oldDades;
         List<FilaDataGrid> dades;
         List<EntradaHorari> horariMetge;
         public List<Especialitat> Especialitats
@@ -46,19 +47,26 @@ namespace GestioInformesHorari.View
         }
         private void GestorHoraris_Loaded(object sender, RoutedEventArgs e)
         {
+            NomText.Text = epGestio.GetNameByCodiMetge(codiMetge);
             horari = Horari.GenerarHorari();
             horariMetge = epGestio.GetHorari(codiMetge);
             Especialitats = epGestio.GetEspecialitats(codiMetge);
             dades = new List<FilaDataGrid>();
             dades = Utils.GenerarLlistaEspecialitats(horari, dades, Especialitats, horariMetge);
             gestorHorariDataGrid.ItemsSource = dades;
-
+            oldDades = Utils.OmplirLLista(dades);
         }
 
         private void Desar_Click(object sender, RoutedEventArgs e)
         {
+            List<FilaDataGrid> newDades = (List<FilaDataGrid>)gestorHorariDataGrid.ItemsSource;
+            Utils.DesarHorariMetge(epGestio, oldDades, newDades, codiMetge);
+            DesatText.Text = "Desat!";
+        }
 
-            int i=0;
+        private void gestorHorariDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DesatText.Text = "";
         }
     }
 }

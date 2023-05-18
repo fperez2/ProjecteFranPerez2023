@@ -125,6 +125,50 @@ namespace GestioInformesHorariBD
             return null;
         }
 
+        public string GetNameByCodiMetge(int codiMetge)
+        {
+            try
+            {
+                using (MyDBContext context = new MyDBContext())
+                {
+                    using (var connexio = context.Database.GetDbConnection())
+                    {
+                        connexio.Open();
+
+                        using (DbCommand consulta = connexio.CreateCommand())
+                        {
+
+                            consulta.CommandText = $@"select * from Persona p
+                                join Metge m on m.Metge_Persona_NIF = p.Persona_NIF
+                                where m.Metge_CodiEmpleat = @codiMetge";
+                            DBUtil.crearParametre(consulta, "@codiMetge", codiMetge, DbType.Int32);
+                            DbDataReader resposta = consulta.ExecuteReader();
+
+                            while (resposta.Read())
+                            {
+                                String cognom2 = null;
+                                String nom = resposta.GetString(resposta.GetOrdinal("Persona_Nom"));
+                                String cognom1 = resposta.GetString(resposta.GetOrdinal("Persona_Cognom1"));
+                                if (!resposta.IsDBNull(resposta.GetOrdinal("Persona_Cognom2")))
+                                {
+                                    cognom2 = resposta.GetString(resposta.GetOrdinal("Persona_Cognom2"));
+                                }
+                                string nomComplet = nom + " " + cognom1 + (cognom2 != null ? " " + cognom2 : "");
+
+                                return nomComplet;
+                            }
+                            return null;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            return null;
+        }
+
         public List<Cita> GetAllCites(int codiMetge)
         {
             try
@@ -403,6 +447,111 @@ namespace GestioInformesHorariBD
                 Console.WriteLine(e.ToString());
             }
           return null;
+        }
+
+        public void InsertEntradaHorari(EntradaHorari eh)
+        {
+            using (MyDBContext context = new MyDBContext())
+            {
+                using (DbConnection connection = context.Database.GetDbConnection())
+                {
+                    connection.Open();
+                    DbTransaction transaccio = connection.BeginTransaction();
+
+                    using (DbCommand consulta = connection.CreateCommand())
+                    {
+                        consulta.Transaction = transaccio;
+
+                        DBUtil.crearParametre(consulta, "@codi", eh.CodiEspecialitat, DbType.Int32);
+                        DBUtil.crearParametre(consulta, "@metge", eh.CodiMetge, DbType.Int32);
+                        DBUtil.crearParametre(consulta, "@dia", eh.DiaSetmana, DbType.String);
+                        DBUtil.crearParametre(consulta, "@hora", eh.Hora, DbType.DateTime);
+
+                        consulta.CommandText = "INSERT INTO EntradaHorari " +
+                            "VALUES (@metge, @hora, @dia, @codi)";
+
+                        int numeroDeFiles = consulta.ExecuteNonQuery();
+                        if (numeroDeFiles != 1)
+                        {
+                            transaccio.Rollback();
+                        }
+                        else
+                        {
+                            transaccio.Commit();
+                        }
+                    }
+                }
+            }
+        }
+
+        public void UpdateEntradaHorari(EntradaHorari oldEH, EntradaHorari newEH)
+        {
+            using (MyDBContext context = new MyDBContext())
+            {
+                using (DbConnection connection = context.Database.GetDbConnection())
+                {
+                    connection.Open();
+                    DbTransaction transaccio = connection.BeginTransaction();
+
+                    using (DbCommand consulta = connection.CreateCommand())
+                    {
+                        consulta.Transaction = transaccio;
+
+                        DBUtil.crearParametre(consulta, "@codi", newEH.CodiEspecialitat, DbType.Int32);
+                        DBUtil.crearParametre(consulta, "@metge", oldEH.CodiMetge, DbType.Int32);
+                        DBUtil.crearParametre(consulta, "@dia", oldEH.DiaSetmana, DbType.String);
+                        DBUtil.crearParametre(consulta, "@hora", oldEH.Hora, DbType.DateTime);
+
+                        consulta.CommandText = "UPDATE EntradaHorari SET Especialitat_Codi = @codi " +
+                            "WHERE Metge_CodiEmpleat = @metge and EntradaHorari_Hora = @hora and EntradaHorari_DiaSetmana = @dia";
+
+                        int numeroDeFiles = consulta.ExecuteNonQuery();
+                        if (numeroDeFiles != 1)
+                        {
+                            transaccio.Rollback();
+                        }
+                        else
+                        {
+                            transaccio.Commit();
+                        }
+                    }
+                }
+            }
+        }
+
+        public void DeleteEntradaHorari(EntradaHorari eh)
+        {
+            using (MyDBContext context = new MyDBContext())
+            {
+                using (DbConnection connection = context.Database.GetDbConnection())
+                {
+                    connection.Open();
+                    DbTransaction transaccio = connection.BeginTransaction();
+
+                    using (DbCommand consulta = connection.CreateCommand())
+                    {
+                        consulta.Transaction = transaccio;
+
+                        DBUtil.crearParametre(consulta, "@codi", eh.CodiEspecialitat, DbType.Int32);
+                        DBUtil.crearParametre(consulta, "@metge", eh.CodiMetge, DbType.Int32);
+                        DBUtil.crearParametre(consulta, "@dia", eh.DiaSetmana, DbType.String);
+                        DBUtil.crearParametre(consulta, "@hora", eh.Hora, DbType.DateTime);
+
+                        consulta.CommandText = "DELETE FROM EntradaHorari " +
+                            "WHERE Metge_CodiEmpleat = @metge and EntradaHorari_Hora = @hora and EntradaHorari_DiaSetmana = @dia and Especialitat_Codi = @codi";
+
+                        int numeroDeFiles = consulta.ExecuteNonQuery();
+                        if (numeroDeFiles != 1)
+                        {
+                            transaccio.Rollback();
+                        }
+                        else
+                        {
+                            transaccio.Commit();
+                        }
+                    }
+                }
+            }
         }
     }
 }

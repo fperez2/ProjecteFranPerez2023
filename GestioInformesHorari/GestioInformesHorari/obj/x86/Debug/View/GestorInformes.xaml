@@ -46,7 +46,7 @@
                 <TextBlock Text="Edat:" FontSize="24" Margin="0,0,10,0" Grid.Row="2" VerticalAlignment="Center" />
                 <TextBlock x:ConnectionId='3' x:Name="EdatText" FontSize="24" Grid.Row="3" VerticalAlignment="Center" />
                 <TextBlock Text="Informe:" FontSize="24" Margin="0,0,10,0" Grid.Row="4" VerticalAlignment="Center" />
-                <TextBox x:ConnectionId='4' x:Name="InformeText"                                       TextWrapping="Wrap" AcceptsReturn="True" FontSize="18" Height="400" Margin="0,20,0,0" Grid.Row="5" VerticalAlignment="Center"/>
+                <TextBox x:ConnectionId='4' x:Name="InformeText"                                       AcceptsReturn="True" FontSize="18" Height="400" Margin="0,20,0,0" Grid.Row="5" VerticalAlignment="Center"/>
                 <Button x:ConnectionId='5' x:Name="DesarBtn"                     Content="Desar" FontSize="18" Margin="0,20,0,0" Grid.Row="6" HorizontalAlignment="Center" IsEnabled="False"/>
                 <TextBlock x:ConnectionId='6' x:Name="DesatText" FontSize="24" Grid.Row="7" VerticalAlignment="Center" HorizontalAlignment="Center" />
             </Grid>

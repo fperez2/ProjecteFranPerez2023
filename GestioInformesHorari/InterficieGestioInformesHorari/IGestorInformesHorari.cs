@@ -8,6 +8,7 @@ namespace InterficieGestioInformesHorari
     {
         int Login(String login, String password);
         string GetNameByNIF(String NIF);
+        string GetNameByCodiMetge(int codiMetge);
         List<Cita> GetAllCites(int codiMetge);
         List<Cita> GetCitesActualWeek(int codiMetge);
         List<Cita> GetCitesPreviousWeek(int codiMetge);
@@ -15,5 +16,8 @@ namespace InterficieGestioInformesHorari
         void UpdateInformeCita(Cita cita);
         List<Especialitat> GetEspecialitats(int codiMetge);
         List<EntradaHorari> GetHorari(int codiMetge);
+        void InsertEntradaHorari(EntradaHorari eh);
+        void UpdateEntradaHorari(EntradaHorari oldEH, EntradaHorari newEH);
+        void DeleteEntradaHorari(EntradaHorari eh);
     }
 }

@@ -155,7 +155,7 @@ namespace GestioInformesHorari.View
         private void InformeText_TextChanged(object sender, TextChangedEventArgs e)
         {
             DesarBtn.IsEnabled = !string.IsNullOrEmpty(InformeText.Text);
-            DesatText.Text = "";
+            //DesatText.Text = "";
         }
         private void Desar_Click(object sender, RoutedEventArgs e)
         {
@@ -209,7 +209,19 @@ namespace GestioInformesHorari.View
                     DesatText.Text = "Desat!";
                 }
                 if (c.Informe != null && c.Informe.Equals(InformeText.Text)) { DesatText.Text = "Aquest informe ja esta desat!"; }
-                if (!Utils.Ultimes48Horas(c.DataHora)) { DesatText.Text = "Aquest informe no es pot editar!"; }
+                if (!Utils.Ultimes48Horas(c.DataHora)) 
+                {
+                    if (c.Informe != null)
+                    {
+                        InformeText.Text = c.Informe;
+                    }
+                    else 
+                    {
+                        InformeText.Text = "";
+                    }
+                     
+                    DesatText.Text = "Aquest informe no es pot editar!"; 
+                }
             }
         }
     }

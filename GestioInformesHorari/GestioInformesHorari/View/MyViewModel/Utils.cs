@@ -1,4 +1,5 @@
-﻿using GestioInformesHorariClasses;
+﻿using GestioInformesHorariBD;
+using GestioInformesHorariClasses;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.Collections.Generic;
@@ -84,6 +85,169 @@ namespace GestioInformesHorari.View.MyViewModel
             if (setmana.Equals("actual")) { pintarColumnaAvui(gestorInformesDataGrid); }
         }
 
+        internal static List<FilaDataGrid> OmplirLLista(List<FilaDataGrid> dades)
+        {
+            List<FilaDataGrid> fotoLlista = new List<FilaDataGrid>();
+            foreach (FilaDataGrid f in dades) 
+            {
+                FilaDataGrid newf = new FilaDataGrid(f.Hora, f.Especialitats, f.Dilluns, f.Dimarts, f.Dimecres, f.Dijous, f.Divendres, f.Dissabte, f.Diumenge);
+                fotoLlista.Add(newf);
+            }
+            return fotoLlista;
+        }
+
+        public static void DesarHorariMetge(EPGestioInformesHorari epGestio, List<FilaDataGrid> dades, List<FilaDataGrid> newDades, int codiMetge)
+        {
+            for (int i = 0; i < dades.Count; i++)
+            {
+                FilaDataGrid oldFila = dades[i];
+                FilaDataGrid newFila = newDades[i];
+                CompararFiles(epGestio, oldFila, newFila, codiMetge);
+            }
+
+        }
+
+        public static void CompararFiles(EPGestioInformesHorari epGestio, FilaDataGrid oldFila, FilaDataGrid newFila, int codiMetge)
+        {
+            string dia;
+            string hora = newFila.Hora;
+            DateTime dataHora = ObtenirDateTimeAmbHora(hora);
+            
+            if (oldFila.Dilluns.Codi != newFila.Dilluns.Codi)
+            {
+                dia = "Dilluns";
+                EntradaHorari newEH = new EntradaHorari(codiMetge, dataHora, dia, newFila.Dilluns.Codi);
+                EntradaHorari oldEH = new EntradaHorari(codiMetge, dataHora, dia, oldFila.Dilluns.Codi);
+                if (oldFila.Dilluns.Codi == 0)
+                {
+                    epGestio.InsertEntradaHorari(newEH);
+                }
+                if (oldFila.Dilluns.Codi != 0 && newFila.Dilluns.Codi != 0)
+                {
+                    epGestio.UpdateEntradaHorari(oldEH, newEH);
+                }
+                if (newFila.Dilluns.Codi == 0)
+                {
+                    epGestio.DeleteEntradaHorari(oldEH);
+                }
+            }
+
+            if (oldFila.Dimarts.Codi != newFila.Dimarts.Codi)
+            {
+                dia = "Dimarts";
+                EntradaHorari newEH = new EntradaHorari(codiMetge, dataHora, dia, newFila.Dimarts.Codi);
+                EntradaHorari oldEH = new EntradaHorari(codiMetge, dataHora, dia, oldFila.Dimarts.Codi);
+                if (oldFila.Dimarts.Codi == 0)
+                {
+                    epGestio.InsertEntradaHorari(newEH);
+                }
+                if (oldFila.Dimarts.Codi != 0 && newFila.Dimarts.Codi != 0)
+                {
+                    epGestio.UpdateEntradaHorari(oldEH, newEH);
+                }
+                if (newFila.Dimarts.Codi == 0)
+                {
+                    epGestio.DeleteEntradaHorari(oldEH);
+                }
+            }
+
+            if (oldFila.Dimecres.Codi != newFila.Dimecres.Codi)
+            {
+                dia = "Dimecres";
+                EntradaHorari newEH = new EntradaHorari(codiMetge, dataHora, dia, newFila.Dimecres.Codi);
+                EntradaHorari oldEH = new EntradaHorari(codiMetge, dataHora, dia, oldFila.Dimecres.Codi);
+                if (oldFila.Dimecres.Codi == 0)
+                {
+                    epGestio.InsertEntradaHorari(newEH);
+                }
+                if (oldFila.Dimecres.Codi != 0 && newFila.Dimecres.Codi != 0)
+                {
+                    epGestio.UpdateEntradaHorari(oldEH, newEH);
+                }
+                if (newFila.Dimecres.Codi == 0)
+                {
+                    epGestio.DeleteEntradaHorari(oldEH);
+                }
+            }
+
+            if (oldFila.Dijous.Codi != newFila.Dijous.Codi)
+            {
+                dia = "Dijous";
+                EntradaHorari newEH = new EntradaHorari(codiMetge, dataHora, dia, newFila.Dijous.Codi);
+                EntradaHorari oldEH = new EntradaHorari(codiMetge, dataHora, dia, oldFila.Dijous.Codi);
+                if (oldFila.Dijous.Codi == 0)
+                {
+                    epGestio.InsertEntradaHorari(newEH);
+                }
+                if (oldFila.Dijous.Codi != 0 && newFila.Dijous.Codi != 0)
+                {
+                    epGestio.UpdateEntradaHorari(oldEH, newEH);
+                }
+                if (newFila.Dijous.Codi == 0)
+                {
+                    epGestio.DeleteEntradaHorari(oldEH);
+                }
+            }
+
+            if (oldFila.Divendres.Codi != newFila.Divendres.Codi)
+            {
+                dia = "Divendres";
+                EntradaHorari newEH = new EntradaHorari(codiMetge, dataHora, dia, newFila.Divendres.Codi);
+                EntradaHorari oldEH = new EntradaHorari(codiMetge, dataHora, dia, oldFila.Divendres.Codi);
+                if (oldFila.Divendres.Codi == 0)
+                {
+                    epGestio.InsertEntradaHorari(newEH);
+                }
+                if (oldFila.Divendres.Codi != 0 && newFila.Divendres.Codi != 0)
+                {
+                    epGestio.UpdateEntradaHorari(oldEH, newEH);
+                }
+                if (newFila.Divendres.Codi == 0)
+                {
+                    epGestio.DeleteEntradaHorari(oldEH);
+                }
+            }
+
+            if (oldFila.Dissabte.Codi != newFila.Dissabte.Codi)
+            {
+                dia = "Dissabte";
+                EntradaHorari newEH = new EntradaHorari(codiMetge, dataHora, dia, newFila.Dissabte.Codi);
+                EntradaHorari oldEH = new EntradaHorari(codiMetge, dataHora, dia, oldFila.Dissabte.Codi);
+                if (oldFila.Dissabte.Codi == 0)
+                {
+                    epGestio.InsertEntradaHorari(newEH);
+                }
+                if (oldFila.Dissabte.Codi != 0 && newFila.Dissabte.Codi != 0)
+                {
+                    epGestio.UpdateEntradaHorari(oldEH, newEH);
+                }
+                if (newFila.Dissabte.Codi == 0)
+                {
+                    epGestio.DeleteEntradaHorari(oldEH);
+                }
+            }
+
+            if (oldFila.Diumenge.Codi != newFila.Diumenge.Codi)
+            {
+                dia = "Diumenge";
+                EntradaHorari newEH = new EntradaHorari(codiMetge, dataHora, dia, newFila.Diumenge.Codi);
+                EntradaHorari oldEH = new EntradaHorari(codiMetge, dataHora, dia, oldFila.Diumenge.Codi);
+                if (oldFila.Diumenge.Codi == 0)
+                {
+                    epGestio.InsertEntradaHorari(newEH);
+                }
+                if (oldFila.Diumenge.Codi != 0 && newFila.Diumenge.Codi != 0)
+                {
+                    epGestio.UpdateEntradaHorari(oldEH, newEH);
+                }
+                if (newFila.Diumenge.Codi == 0)
+                {
+                    epGestio.DeleteEntradaHorari(oldEH);
+                }
+            }
+            
+        }
+
         public static List<FilaDataGrid> GenerarLlistaEspecialitats(List<Horari> horari, List<FilaDataGrid> dades, List<Especialitat> especialitats, List<EntradaHorari> horariMetge)
         {
             Especialitat dilluns = new Especialitat();
@@ -152,7 +316,7 @@ namespace GestioInformesHorari.View.MyViewModel
             return dades;
         }
 
-        private static Especialitat comprovaEspecilitat(List<Especialitat> especialitats, int codiEspecialitat)
+        public static Especialitat comprovaEspecilitat(List<Especialitat> especialitats, int codiEspecialitat)
         {
             Especialitat esp = null;
             foreach (Especialitat e in especialitats)
@@ -162,7 +326,7 @@ namespace GestioInformesHorari.View.MyViewModel
             return esp;
         }
 
-        private static void AfegirCites(List<Cita> cites, List<Horari> horari, string setmana)
+        public static void AfegirCites(List<Cita> cites, List<Horari> horari, string setmana)
         {
             foreach (Cita cita in cites) {
                 string horaString = cita.DataHora.ToString("HH:mm");
@@ -337,7 +501,7 @@ namespace GestioInformesHorari.View.MyViewModel
         public static bool Ultimes48Horas(DateTime data)
         {
             DateTime ara = DateTime.Now;
-            DateTime iniciRang = ara.AddDays(-2).Date; // Inici del rang: fa dos dies a las 00:00
+            DateTime iniciRang = ara.AddDays(-1).Date; // Inici del rang: fa dos dies a las 00:00
             DateTime fiRang = ara.Date.AddDays(1).AddTicks(-1); // Fi del rang: avui a las 23:59:59.9999999
 
             if (data >= iniciRang && data <= fiRang)
@@ -348,6 +512,14 @@ namespace GestioInformesHorari.View.MyViewModel
             {
                 return false;
             }
+        }
+
+        public static DateTime ObtenirDateTimeAmbHora(string horaString)
+        {
+            DateTime dataBase = new DateTime(2000, 1, 1);
+            TimeSpan hora = TimeSpan.Parse(horaString);
+            DateTime resultat = dataBase.Date + hora;
+            return resultat;
         }
 
     }
