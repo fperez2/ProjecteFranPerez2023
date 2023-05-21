@@ -246,4 +246,9 @@ public class EPJPA implements IGestorCitesMediques{
         }    
     }
 
+    @Override
+    public Persona login(String user, String password) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

@@ -14,7 +14,7 @@ import org.milaifontanals.interficie.IGestorCitesMediques;
 import org.milaifontanals.interficie.IGestorCitesMediquesException;
 
 public class servidor {
-    private static Hashtable <String,Integer> users = new Hashtable<>(); 
+    private static Hashtable <String,String> users = new Hashtable<>(); 
     public static void main(String[] args) {
         
         ServerSocket serverSocket = null;

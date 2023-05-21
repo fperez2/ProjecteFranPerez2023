@@ -22,6 +22,12 @@ public class Cita implements Serializable{
         setInforme(informe);
     }
 
+    public Cita(int codiMetge, String nif, Date dataHora) {
+        setCodiMetge(codiMetge);
+        setNif(nif);
+        setDataHora(dataHora);
+    }
+
     public int getCodiMetge() {
         return codiMetge;
     }

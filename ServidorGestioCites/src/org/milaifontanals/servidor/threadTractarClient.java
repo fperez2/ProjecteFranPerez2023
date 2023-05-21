@@ -16,14 +16,19 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.UUID;
+import org.milaifontanals.classes.Cita;
+import org.milaifontanals.classes.Especialitat;
+import org.milaifontanals.classes.Login;
+import org.milaifontanals.classes.Metge;
+import org.milaifontanals.classes.Persona;
 import org.milaifontanals.interficie.IGestorCitesMediques;
 
 
 public class threadTractarClient extends Thread{
     protected Socket socket;
-    private Hashtable<String,Integer> users = new Hashtable<>();
+    private Hashtable<String,String> users = new Hashtable<>();
     IGestorCitesMediques igcm;
-    public threadTractarClient(Socket clientSocket,IGestorCitesMediques igcm, Hashtable<String,Integer> users) {
+    public threadTractarClient(Socket clientSocket,IGestorCitesMediques igcm, Hashtable<String,String> users) {
         this.socket = clientSocket;
         this.igcm = igcm;
         this.users = users;
@@ -48,7 +53,70 @@ public class threadTractarClient extends Thread{
                 String session_id = (String)fromClient.readObject();
                 users.remove(session_id);
                 socket.close();
-            } 
+            }else if(line.equalsIgnoreCase("<<LOGIN>>"))
+            {
+                String login = (String)fromClient.readObject();
+                String password = (String)fromClient.readObject();
+                Persona p = igcm.login(login, password);
+
+                if(p != null)
+                {
+                    String session_id = UUID.randomUUID().toString();
+                    users.put(session_id,p.getNif());
+                    System.out.println("Session_id: "+session_id+" NIF persona: "+p.getNif());
+                    Login l = new Login(session_id,p);
+                    toClient.writeObject(l);
+                    toClient.flush();
+
+                    System.out.println("OBJECTE ENVIAT");
+
+                   // socket.close();
+                }else
+                {
+                   //incorrecte
+                    toClient.writeObject(null);
+                    System.out.println("OBJECTE ENVIAT INCORRECTE");
+                }
+            }else if(line.equalsIgnoreCase("<<CITES>>"))
+            {
+                String session_id = (String)fromClient.readObject();
+
+                System.out.println("Session id: "+session_id);
+                String nif = users.get(session_id);
+                System.out.println("User_id NIF: " + nif);
+                if(nif==null)
+                {
+                    toClient.writeObject(null);
+                     System.out.println("NULL");
+                    toClient.flush();
+                }else
+                {
+                    List<Cita> cites = igcm.getCites(nif);
+                    toClient.writeObject(cites);
+                    toClient.flush();
+                    System.out.println("He enviat " + cites.size() + " cites");
+                }
+
+            }else if(line.equalsIgnoreCase("<<PERSONAMETGE>>"))
+            {
+                List<Persona> metges = igcm.getMetgeNames();
+                toClient.writeObject(metges);
+                toClient.flush();
+                System.out.println("He enviat " + metges.size() + " persones que son metges");
+            }else if(line.equalsIgnoreCase("<<METGES>>"))
+            {
+                List<Metge> metges = igcm.getAllMetges();
+                toClient.writeObject(metges);
+                toClient.flush();
+                System.out.println("He enviat " + metges.size() + " metges");
+            }else if(line.equalsIgnoreCase("<<ESPECIALITATS>>"))
+            {
+                List<Especialitat> especialitats = igcm.getAllEspecialitats();
+                toClient.writeObject(especialitats);
+                toClient.flush();
+                System.out.println("He enviat " + especialitats.size() + " especialitats");
+            }        
+            
         } catch (Exception e) {
             e.printStackTrace();          
         }  
