@@ -12,6 +12,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
@@ -82,7 +83,7 @@ public class threadTractarClient extends Thread{
             {
                 String session_id = (String)fromClient.readObject();
 
-                System.out.println("Session id: "+session_id);
+                System.out.println("Session id: " + session_id);
                 String nif = users.get(session_id);
                 System.out.println("User_id NIF: " + nif);
                 if(nif==null)
@@ -128,7 +129,34 @@ public class threadTractarClient extends Thread{
                 igcm.deleteCita(c);
 
                 System.out.println("He eliminat la cita correctament");
-            }              
+            }else if(line.equalsIgnoreCase("<<RESERVAR_CITA>>"))
+            {
+                String session_id = (String)fromClient.readObject();
+
+                System.out.println("Session id: " + session_id);
+                String nif = users.get(session_id);
+                Date date = (Date)fromClient.readObject();
+                int codiMetge = (int)fromClient.readObject();
+                String hora = (String)fromClient.readObject();
+
+                System.out.println(nif + "  // " + codiMetge + "  //  " + hora);
+
+                igcm.reservarCita(nif, date, codiMetge, hora);
+
+                System.out.println("He reservat la cita correctament");
+            }else if(line.equalsIgnoreCase("<<FORATS>>"))
+            {
+                Date date = (Date)fromClient.readObject();
+                int codiMetge = (int)fromClient.readObject();
+                int codiEsp = (int)fromClient.readObject();
+
+                System.out.println(date.toString() + "  // " + codiMetge + "  //  " + codiEsp);
+
+                List<String> forats = igcm.getForats(date, codiMetge, codiEsp);
+                toClient.writeObject(forats);
+                toClient.flush();
+                System.out.println("He enviat " + forats.size() + " forats");
+            }                       
             
         } catch (Exception e) {
             e.printStackTrace();          

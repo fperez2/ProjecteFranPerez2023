@@ -1,5 +1,6 @@
 package org.milaifontanals.interficie;
 
+import java.sql.Date;
 import java.util.List;
 import org.milaifontanals.classes.Cita;
 import org.milaifontanals.classes.EntradaHorari;
@@ -27,6 +28,8 @@ public interface IGestorCitesMediques {
     //List<Especialitat> getAllEspecialitats();
     List<EntradaHorari> getHorariMetges();
     void deleteCita(Cita cita);
+    List<String> getForats(Date date, int codiMetge, int codiEsp);
+    void reservarCita(String nif, Date date, int codiMetge, String hora);
     
     void commit();
     void rollback();

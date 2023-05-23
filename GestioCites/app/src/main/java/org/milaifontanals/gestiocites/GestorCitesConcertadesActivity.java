@@ -33,10 +33,6 @@ public class GestorCitesConcertadesActivity extends AppCompatActivity {
     ActivityCitesBinding binding;
     GestioViewModel vm;
     List<Cita> cites_persona = new ArrayList<Cita>();
-    List<Metge> all_metges = new ArrayList<Metge>();
-    List<Persona> persones_metge = new ArrayList<Persona>();
-    List<Especialitat> all_especialitats = new ArrayList<Especialitat>();
-    List<EntradaHorari> all_entradaHorari = new ArrayList<EntradaHorari>();
     String session_id;
     Context mContext = this;
 
@@ -52,56 +48,6 @@ public class GestorCitesConcertadesActivity extends AppCompatActivity {
 
         vm = new ViewModelProvider(this).get(GestioViewModel.class);
 
-        vm.getMetges().observe(this, new Observer<List<Metge>>() {
-            @Override
-            public void onChanged(List<Metge> metges) {
-                if(metges!=null)
-                {
-                    all_metges = new ArrayList<>(metges);
-                }
-            }
-        });
-        vm.getAllMetges();
-
-        vm.getEspecialitats().observe(this, new Observer<List<Especialitat>>() {
-            @Override
-            public void onChanged(List<Especialitat> especialitats) {
-                if(especialitats!=null)
-                {
-                    all_especialitats = new ArrayList<>(especialitats);
-                }
-            }
-        });
-        vm.getAllEspecialitats();
-
-        vm.getPersonesMetges().observe(this, new Observer<List<Persona>>() {
-            @Override
-            public void onChanged(List<Persona> persones) {
-                if(persones!=null)
-                {
-                    persones_metge = new ArrayList<>(persones);
-                }
-            }
-        });
-        vm.getAllPersonaMetge();
-
-        vm.getEntradaHorari().observe(this, new Observer<List<EntradaHorari>>() {
-            @Override
-            public void onChanged(List<EntradaHorari> entradaHorari) {
-                if(entradaHorari!=null)
-                {
-                    all_entradaHorari = new ArrayList<>(entradaHorari);
-                }
-            }
-        });
-        vm.getAllEntradaHorari();
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         vm.getCites().observe(this, new Observer<List<Cita>>() {
             @Override
             public void onChanged(List<Cita> cites) {
@@ -112,7 +58,7 @@ public class GestorCitesConcertadesActivity extends AppCompatActivity {
 
                     cites_persona = new ArrayList<>(cites);
 
-                    AdapterCites v = new AdapterCites(mContext,cites_persona,all_metges,persones_metge,all_especialitats,all_entradaHorari,session_id);
+                    AdapterCites v = new AdapterCites(mContext,vm,cites_persona,session_id);
                     binding.rcyCites.setAdapter(v);
 
                 }else {

@@ -13,7 +13,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Calendar;
@@ -138,9 +141,24 @@ public class EPJDBC implements IGestorCitesMediques {
     @Override
     public List<Cita> getCites(String nif) {
        List<Cita> cites = new ArrayList();
-       String query = "select * from Cita " +
-                        "where Cita_Persona_NIF = ? and Cita_DataHora >= CURDATE() " +
-                        "ORDER BY Cita_DataHora ASC ";
+       String query = "select c.*, p.Persona_Nom, p.Persona_Cognom1, e.Especialitat_Nom " +
+                        "from cita c " +
+                        "join metge m on m.Metge_CodiEmpleat = c.Cita_Metge_CodiEmpleat " +
+                        "join persona p on m.Metge_Persona_NIF = p.Persona_NIF " +
+                        "join entradahorari eh on m.Metge_CodiEmpleat = eh.Metge_CodiEmpleat " +
+                        "and TIME(eh.EntradaHorari_Hora) = TIME(c.Cita_DataHora) " +
+                        "and CASE " +
+                        "           WHEN DAYOFWEEK(c.Cita_DataHora) = 1 THEN eh.EntradaHorari_DiaSetmana = 'Diumenge' " +
+                        "           WHEN DAYOFWEEK(c.Cita_DataHora) = 2 THEN eh.EntradaHorari_DiaSetmana = 'Dilluns' " +
+                        "           WHEN DAYOFWEEK(c.Cita_DataHora) = 3 THEN eh.EntradaHorari_DiaSetmana = 'Dimarts' " +
+                        "           WHEN DAYOFWEEK(c.Cita_DataHora) = 4 THEN eh.EntradaHorari_DiaSetmana = 'Dimecres' " +
+                        "           WHEN DAYOFWEEK(c.Cita_DataHora) = 5 THEN eh.EntradaHorari_DiaSetmana = 'Dijous' " +
+                        "           WHEN DAYOFWEEK(c.Cita_DataHora) = 6 THEN eh.EntradaHorari_DiaSetmana = 'Divendres' " +
+                        "           WHEN DAYOFWEEK(c.Cita_DataHora) = 7 THEN eh.EntradaHorari_DiaSetmana = 'Dissabte' " +
+                        "       END " +
+                        "join especialitat e on e.Especialitat_Codi = eh.Especialitat_Codi " +
+                        "where c.Cita_Persona_NIF = ? and c.Cita_DataHora >= CURDATE() " +
+                        "ORDER BY c.Cita_DataHora ASC ";
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
@@ -159,10 +177,13 @@ public class EPJDBC implements IGestorCitesMediques {
                     int codi_empleat = rs.getInt("Cita_Metge_CodiEmpleat");   
                     Timestamp data = rs.getTimestamp("Cita_DataHora");
                     String informe = rs.getString("Cita_Informe");
+                    String nom_Metge = rs.getString("Persona_Nom");
+                    String cognom_Metge = rs.getString("Persona_Cognom1");
+                    String nom_Especialitat = rs.getString("Especialitat_Nom");
                     if(informe != null){
-                        c = new Cita(codi_empleat, nif, data, informe);
+                        c = new Cita(codi_empleat, nif, data, informe, nom_Metge + cognom_Metge, nom_Especialitat);
                     }else{
-                        c = new Cita(codi_empleat, nif, data);
+                        c = new Cita(codi_empleat, nif, data, nom_Metge + cognom_Metge, nom_Especialitat);
                     }
                     cites.add(c);              
                 }while(rs.next());
@@ -410,6 +431,123 @@ public class EPJDBC implements IGestorCitesMediques {
         }
     }
 
+    @Override
+    public List<String> getForats(Date date, int codiMetge, int codiEsp) {
+        List<String> ehs = new ArrayList();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String query = "select * " +
+                    "from entradahorari eh " +
+                    "join metge m on m.Metge_CodiEmpleat = eh.Metge_CodiEmpleat " +
+                    "where eh.Metge_CodiEmpleat = ? and eh.Especialitat_Codi = ? and " +
+                    "CASE " +
+                    "           WHEN DAYOFWEEK(?) = 1 THEN eh.EntradaHorari_DiaSetmana = 'Diumenge' " +
+                    "           WHEN DAYOFWEEK(?) = 2 THEN eh.EntradaHorari_DiaSetmana = 'Dilluns' " +
+                    "           WHEN DAYOFWEEK(?) = 3 THEN eh.EntradaHorari_DiaSetmana = 'Dimarts' " +
+                    "           WHEN DAYOFWEEK(?) = 4 THEN eh.EntradaHorari_DiaSetmana = 'Dimecres' " +
+                    "           WHEN DAYOFWEEK(?) = 5 THEN eh.EntradaHorari_DiaSetmana = 'Dijous' " +
+                    "           WHEN DAYOFWEEK(?) = 6 THEN eh.EntradaHorari_DiaSetmana = 'Divendres' " +
+                    "           WHEN DAYOFWEEK(?) = 7 THEN eh.EntradaHorari_DiaSetmana = 'Dissabte' " +
+                    "       END " +
+                    "and TIME(eh.EntradaHorari_Hora) not in ( " +
+                    "    SELECT TIME(c.Cita_DataHora) " +
+                    "    FROM cita c " +
+                    "    WHERE DATE(c.Cita_DataHora) =  DATE(?) and c.Cita_Metge_CodiEmpleat = ? " +
+                    ") ";
+         
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try
+        {         
+            st = con.prepareStatement(query);
+            st.setInt(1, codiMetge);
+            st.setInt(2, codiEsp);
+            java.util.Date utilDate = date;
+            Timestamp timestamp = new Timestamp(utilDate.getTime());
+            st.setTimestamp(3, timestamp);
+            st.setTimestamp(4, timestamp);
+            st.setTimestamp(5, timestamp);
+            st.setTimestamp(6, timestamp);
+            st.setTimestamp(7, timestamp);
+            st.setTimestamp(8, timestamp);
+            st.setTimestamp(9, timestamp);
+            st.setTimestamp(10, timestamp);
+            st.setInt(11, codiMetge);
+            rs = st.executeQuery();
+
+             if(rs.next()==false)
+            {
+                System.out.println("No data"); 
+                return null;           
+            }
+            else
+            {
+                do
+                {
+                Timestamp hora = rs.getTimestamp("EntradaHorari_Hora");
+                 Calendar calendar = Calendar.getInstance();
+                calendar.setTime(hora);
+                calendar.add(Calendar.HOUR_OF_DAY, -1);
+                Timestamp horaRestada = new Timestamp(calendar.getTimeInMillis());
+                ehs.add(sdf.format(horaRestada));
+                }while(rs.next());
+                return ehs;
+            }
+        } catch (SQLException ex) {
+            throw new IGestorCitesMediquesException("Error en el metode getForats: "+ex.getMessage());
+        }finally {     
+            try 
+            {
+                if(st!=null)
+                {
+                     st.close();
+                      rs.close();
+                }             
+            } catch (SQLException ex) {
+                throw new IGestorCitesMediquesException("Error en tancar les sentències utilitzada per executar la consulta.", ex);
+            }
+        }
+    }
+    
+    @Override
+    public void reservarCita(String nif, Date date, int codiMetge, String hora) {
+        String query = "insert into Cita values (?,?,?, null)";
+         
+        PreparedStatement st = null;
+     
+        try
+        {         
+            st = con.prepareStatement(query);
+            st.setInt(1, codiMetge);
+            st.setString(2, nif);
+            LocalTime horaL = LocalTime.parse(hora, DateTimeFormatter.ofPattern("HH:mm"));
+            LocalTime horanova = horaL.plusHours(2);
+            String horanovaS = horanova.format(DateTimeFormatter.ofPattern("HH:mm"));
+            String dataHoraString = date.toString() + " " + horanovaS;
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            java.util.Date dataHora = dateFormat.parse(dataHoraString);
+            
+            Timestamp timestamp = new Timestamp(dataHora.getTime());
+            st.setTimestamp(3, timestamp);
+            
+            st.executeUpdate();
+            st.close();
+            con.commit();
+        } catch (SQLException ex) {
+            boolean rollback = true;
+            try {
+                con.rollback();
+            } catch (SQLException ex1) {
+                rollback = false;
+            }
+            if (rollback == false) {
+                throw new IGestorCitesMediquesException("Problemes en executar i no s'ha pogut efectuar rollback", ex);
+            } else {
+                throw new IGestorCitesMediquesException("Error en la execucio del metode deleteCita ", ex);
+            }
+        } catch (ParseException ex) {
+            throw new IGestorCitesMediquesException("Error en parsear dates ", ex);
+        }
+    }
     
     @Override
     public Metge getMetge(int codiMetge) {

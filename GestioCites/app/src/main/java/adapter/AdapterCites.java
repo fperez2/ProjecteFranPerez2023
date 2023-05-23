@@ -41,27 +41,14 @@ import viewModel.GestioViewModel;
 
 public class AdapterCites extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     List<Cita> cites;
-    List<Metge> metges;
-    List<Persona> persones;
-    List<Especialitat> especialitats;
-    List<EntradaHorari> entradaHorari;
     Context mContext;
     String session_id;
+    GestioViewModel vmp;
 
-    private Socket server;
-    ObjectOutputStream toServer;
-    ObjectInputStream fromServer;
-    ExecutorService executor;
-    private String IP = "10.200.1.21"; // //192.168.1.29
-    private int PORT = 10000;
-
-    public AdapterCites(Context c, List<Cita> cites_persona, List<Metge> all_metges, List<Persona> persones_metge, List<Especialitat> all_especialitats, List<EntradaHorari> all_entradaHorari, String session_id) {
+    public AdapterCites(Context c, GestioViewModel vm, List<Cita> cites_persona, String session_id) {
         mContext = c;
+        vmp = vm;
         cites = cites_persona;
-        metges = all_metges;
-        persones = persones_metge;
-        especialitats = all_especialitats;
-        entradaHorari = all_entradaHorari;
         this.session_id = session_id;
     }
 
@@ -91,9 +78,8 @@ public class AdapterCites extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         Cita c = cites.get(position);
 
         int codiMetge = c.getCodiMetge();
-        String nom_especialitat = "";
-        String nif_metge = "";
-        String name_metge = "";
+        String nom_especialitat = c.getNomEspecialitat();
+        String name_metge = c.getNomMetge();
         Date dataCita = c.getDataHora();
         Calendar dataCitaC = Calendar.getInstance();
         dataCitaC.setTime(dataCita);
@@ -102,34 +88,7 @@ public class AdapterCites extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         holder.textViewData.setText(formatData.format(dataCita));
         holder.textViewHora.setText((horaCita < 10  ? "0" + horaCita : horaCita) + ":" + (minutCita == 0 ? minutCita + "0" : minutCita));
-
-        for(EntradaHorari eh : entradaHorari){
-            Date dataEH = eh.getHora();
-            Calendar dataEHC = Calendar.getInstance();
-            dataEHC.setTime(dataEH);
-            int horaEH = dataEHC.get(Calendar.HOUR_OF_DAY);
-            int minutEH = dataEHC.get(Calendar.MINUTE);
-
-            if(horaCita == horaEH && minutCita == minutEH && codiMetge == eh.getCodiMetge()){
-                for(Especialitat e : especialitats){
-                    if(e.getCodi() == eh.getCodiEspecialitat()){
-                        nom_especialitat = e.getNom();
-                    }
-                }
-            }
-        }
         holder.textViewEspecialitat.setText(nom_especialitat);
-
-        for (Metge m : metges){
-            if (m.getCodiEmpleat() == codiMetge){
-                nif_metge = m.getNif();
-            }
-        }
-        for(Persona p : persones){
-            if(p.getNif().equals(nif_metge)){
-                name_metge = p.getNom() + " " + p.getCognom1();
-            }
-        }
         holder.textViewMetge.setText(name_metge);
 
         holder.buttonCancelar.setOnClickListener(new View.OnClickListener() {
@@ -142,7 +101,7 @@ public class AdapterCites extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 int position = holder.getAdapterPosition();
-                                deleteCita(c);
+                                vmp.deleteCita(c);
                                 cites.remove(c);
                                 notifyItemRemoved(position);
                             }
@@ -172,42 +131,6 @@ public class AdapterCites extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             textViewMetge = itemView.findViewById(R.id.textViewMetge);
             buttonCancelar = itemView.findViewById(R.id.buttonCancelar);
         }
-    }
-
-    public void startConnection() {
-
-        try {
-            InetAddress serverAddr = InetAddress.getByName(IP);
-            server = new Socket(serverAddr, PORT);
-            toServer = new ObjectOutputStream(server.getOutputStream());
-            fromServer = new ObjectInputStream(server.getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void deleteCita(Cita cita)
-    {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                try
-                {
-                    startConnection();
-                    toServer.writeObject("<<DELETE_CITA>>");
-                    toServer.flush();
-                    toServer.writeObject(cita);
-                    toServer.flush();
-                    fromServer.close();
-                    toServer.close();
-                    server.close();
-                }catch(IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        });
-
     }
 
 }

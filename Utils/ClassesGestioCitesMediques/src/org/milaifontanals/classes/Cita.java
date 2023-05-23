@@ -13,6 +13,9 @@ public class Cita implements Serializable{
     private Date dataHora;
     private String informe;
     
+    private String nom_Metge;
+    private String nom_Especialitat;
+    
     protected Cita(){}
 
     public Cita(int codiMetge, String nif, Date dataHora, String informe) {
@@ -26,6 +29,23 @@ public class Cita implements Serializable{
         setCodiMetge(codiMetge);
         setNif(nif);
         setDataHora(dataHora);
+    }
+    
+    public Cita(int codiMetge, String nif, Date dataHora, String informe, String nom_Metge, String nom_Especialitat) {
+        setCodiMetge(codiMetge);
+        setNif(nif);
+        setDataHora(dataHora);
+        setInforme(informe);
+        setNomMetge(nom_Metge);
+        setNomEspecialitat(nom_Especialitat);
+    }
+
+    public Cita(int codiMetge, String nif, Date dataHora, String nom_Metge, String nom_Especialitat) {
+        setCodiMetge(codiMetge);
+        setNif(nif);
+        setDataHora(dataHora);
+        setNomMetge(nom_Metge);
+        setNomEspecialitat(nom_Especialitat);
     }
 
     public int getCodiMetge() {
@@ -70,6 +90,22 @@ public class Cita implements Serializable{
 
     public void setInforme(String informe) {
         this.informe = informe;
+    }
+
+    public String getNomMetge() {
+        return nom_Metge;
+    }
+
+    public void setNomMetge(String nom_Metge) {
+        this.nom_Metge = nom_Metge;
+    }
+
+    public String getNomEspecialitat() {
+        return nom_Especialitat;
+    }
+
+    public void setNomEspecialitat(String nom_Especialitat) {
+        this.nom_Especialitat = nom_Especialitat;
     }
 
     @Override
