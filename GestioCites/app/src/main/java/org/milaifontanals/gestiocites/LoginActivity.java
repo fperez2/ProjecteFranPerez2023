@@ -32,9 +32,9 @@ public class LoginActivity extends AppCompatActivity {
                 {
                     binding.txvError.setText("ERROR Usuari o contraseña no valids");
                 }else{
-                    //Intent i = new Intent(LoginActivity.this,LoginActivity.class);
-                    //i.putExtra("SESSION_ID",login.getSession_id());
-                    //startActivity(i);
+                    Intent i = new Intent(LoginActivity.this, GestorCitesConcertadesActivity.class);
+                    i.putExtra("SESSION_ID",login.getSession_id());
+                    startActivity(i);
                 }
             }
         });

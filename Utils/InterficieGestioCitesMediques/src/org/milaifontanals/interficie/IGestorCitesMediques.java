@@ -2,6 +2,7 @@ package org.milaifontanals.interficie;
 
 import java.util.List;
 import org.milaifontanals.classes.Cita;
+import org.milaifontanals.classes.EntradaHorari;
 import org.milaifontanals.classes.Especialitat;
 import org.milaifontanals.classes.Metge;
 import org.milaifontanals.classes.Persona;
@@ -24,6 +25,8 @@ public interface IGestorCitesMediques {
     List<Persona> getMetgeNames();
     //List<Metge> getAllMetges();
     //List<Especialitat> getAllEspecialitats();
+    List<EntradaHorari> getHorariMetges();
+    void deleteCita(Cita cita);
     
     void commit();
     void rollback();

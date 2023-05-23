@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context=".GestorNovaVisitaActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Especialitat" />
+
+    <Spinner
+        android:id="@+id/spinnerEspecialitat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Metge" />
+
+    <Spinner
+        android:id="@+id/spinnerMetge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/buttonEscollirData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Escollir Data" />
+        <TextView
+            android:id="@+id/txvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/buttonBuscarHores"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Buscar Hora" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/red"
+        android:text="No hi ha hores disponibles amb aquests filtres."
+        android:visibility="gone"
+        android:id="@+id/txvMissatgeError"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        android:id="@+id/rcyHoresLliures"
+        android:layout_gravity="center_horizontal"
+        />
+
+</LinearLayout>

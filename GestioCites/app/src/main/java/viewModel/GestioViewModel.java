@@ -27,9 +27,7 @@ import java.util.concurrent.Executors;
 
 
 public class GestioViewModel extends AndroidViewModel {
-    private Socket server;
-    ObjectOutputStream toServer;
-    ObjectInputStream fromServer;
+
     ExecutorService executor;
     private MutableLiveData<Login> log;
     private MutableLiveData<List<Cita>> cites;
@@ -38,7 +36,7 @@ public class GestioViewModel extends AndroidViewModel {
     private MutableLiveData<List<Especialitat>> especialitats;
     private MutableLiveData<List<EntradaHorari>> entradaHorari;
 
-    private String IP = "192.168.1.29";
+    private String IP = "192.168.1.29"; //10.200.1.21 //192.168.1.29
     private int PORT = 10000;
 
     public GestioViewModel(@NonNull Application application) {
@@ -46,19 +44,23 @@ public class GestioViewModel extends AndroidViewModel {
         executor = Executors.newFixedThreadPool(10);
         log = new MutableLiveData<>();
         cites = new MutableLiveData<>();
+        metges = new MutableLiveData<>();
+        personesMetge = new MutableLiveData<>();
+        especialitats = new MutableLiveData<>();
+        entradaHorari = new MutableLiveData<>();
     }
 
-    public void startConnection() {
-
-            try {
-                InetAddress serverAddr = InetAddress.getByName(IP);
-                server = new Socket(serverAddr, PORT);
-                toServer = new ObjectOutputStream(server.getOutputStream());
-                fromServer = new ObjectInputStream(server.getInputStream());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-    }
+//    public void startConnection() {
+//
+//            try {
+//                InetAddress serverAddr = InetAddress.getByName(IP);
+//                server = new Socket(serverAddr, PORT);
+//                toServer = new ObjectOutputStream(server.getOutputStream());
+//                fromServer = new ObjectInputStream(server.getInputStream());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//    }
 
     public void login(String login, String password)
     {
@@ -66,8 +68,15 @@ public class GestioViewModel extends AndroidViewModel {
             @Override
             public void run() {
                 try {
+                    Socket server;
+                    ObjectOutputStream toServer;
+                    ObjectInputStream fromServer;
 
-                    startConnection();
+                    InetAddress serverAddr = InetAddress.getByName(IP);
+                    server = new Socket(serverAddr, PORT);
+                    toServer = new ObjectOutputStream(server.getOutputStream());
+                    fromServer = new ObjectInputStream(server.getInputStream());
+
                     toServer.writeObject("<<LOGIN>>");
                     toServer.flush();
 
@@ -98,7 +107,14 @@ public class GestioViewModel extends AndroidViewModel {
             public void run() {
                 try
                 {
-                    startConnection();
+                    Socket server;
+                    ObjectOutputStream toServer;
+                    ObjectInputStream fromServer;
+
+                    InetAddress serverAddr = InetAddress.getByName(IP);
+                    server = new Socket(serverAddr, PORT);
+                    toServer = new ObjectOutputStream(server.getOutputStream());
+                    fromServer = new ObjectInputStream(server.getInputStream());
                     toServer.writeObject("<<CITES>>");
                     toServer.flush();
                     toServer.writeObject(session_id);
@@ -127,7 +143,14 @@ public class GestioViewModel extends AndroidViewModel {
             public void run() {
                 try
                 {
-                    startConnection();
+                    Socket server;
+                    ObjectOutputStream toServer;
+                    ObjectInputStream fromServer;
+
+                    InetAddress serverAddr = InetAddress.getByName(IP);
+                    server = new Socket(serverAddr, PORT);
+                    toServer = new ObjectOutputStream(server.getOutputStream());
+                    fromServer = new ObjectInputStream(server.getInputStream());
                     toServer.writeObject("<<METGES>>");
                     toServer.flush();
                     List<Metge> aux = (List<Metge>)fromServer.readObject();
@@ -154,7 +177,14 @@ public class GestioViewModel extends AndroidViewModel {
             public void run() {
                 try
                 {
-                    startConnection();
+                    Socket server;
+                    ObjectOutputStream toServer;
+                    ObjectInputStream fromServer;
+
+                    InetAddress serverAddr = InetAddress.getByName(IP);
+                    server = new Socket(serverAddr, PORT);
+                    toServer = new ObjectOutputStream(server.getOutputStream());
+                    fromServer = new ObjectInputStream(server.getInputStream());
                     toServer.writeObject("<<PERSONAMETGE>>");
                     toServer.flush();
                     List<Persona> aux = (List<Persona>)fromServer.readObject();
@@ -181,7 +211,14 @@ public class GestioViewModel extends AndroidViewModel {
             public void run() {
                 try
                 {
-                    startConnection();
+                    Socket server;
+                    ObjectOutputStream toServer;
+                    ObjectInputStream fromServer;
+
+                    InetAddress serverAddr = InetAddress.getByName(IP);
+                    server = new Socket(serverAddr, PORT);
+                    toServer = new ObjectOutputStream(server.getOutputStream());
+                    fromServer = new ObjectInputStream(server.getInputStream());
                     toServer.writeObject("<<ESPECIALITATS>>");
                     toServer.flush();
                     List<Especialitat> aux = (List<Especialitat>)fromServer.readObject();
@@ -208,7 +245,14 @@ public class GestioViewModel extends AndroidViewModel {
             public void run() {
                 try
                 {
-                    startConnection();
+                    Socket server;
+                    ObjectOutputStream toServer;
+                    ObjectInputStream fromServer;
+
+                    InetAddress serverAddr = InetAddress.getByName(IP);
+                    server = new Socket(serverAddr, PORT);
+                    toServer = new ObjectOutputStream(server.getOutputStream());
+                    fromServer = new ObjectInputStream(server.getInputStream());
                     toServer.writeObject("<<ENTRADAHORARI>>");
                     toServer.flush();
                     List<EntradaHorari> aux = (List<EntradaHorari>)fromServer.readObject();
@@ -225,8 +269,9 @@ public class GestioViewModel extends AndroidViewModel {
                 }
             }
         });
-
     }
+
+
 
     public MutableLiveData<Login> getLog() {
         return log;
@@ -240,19 +285,39 @@ public class GestioViewModel extends AndroidViewModel {
         return cites;
     }
 
+    public void setCites(MutableLiveData<List<Cita>> cites) {
+        this.cites = cites;
+    }
+
     public MutableLiveData<List<Metge>> getMetges() {
         return metges;
+    }
+
+    public void setMetges(MutableLiveData<List<Metge>> metges) {
+        this.metges = metges;
     }
 
     public MutableLiveData<List<Persona>> getPersonesMetges() {
         return personesMetge;
     }
 
+    public void setPersonesMetge(MutableLiveData<List<Persona>> personesMetge) {
+        this.personesMetge = personesMetge;
+    }
+
     public MutableLiveData<List<Especialitat>> getEspecialitats() {
         return especialitats;
     }
 
+    public void setEspecialitats(MutableLiveData<List<Especialitat>> especialitats) {
+        this.especialitats = especialitats;
+    }
+
     public MutableLiveData<List<EntradaHorari>> getEntradaHorari() {
         return entradaHorari;
+    }
+
+    public void setEntradaHorari(MutableLiveData<List<EntradaHorari>> entradaHorari) {
+        this.entradaHorari = entradaHorari;
     }
 }

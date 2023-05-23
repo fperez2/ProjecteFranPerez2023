@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -22,6 +23,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.milaifontanals.classes.Cita;
+import org.milaifontanals.classes.EntradaHorari;
 import org.milaifontanals.classes.Especialitat;
 import org.milaifontanals.classes.Metge;
 import org.milaifontanals.classes.Persona;
@@ -98,6 +100,7 @@ public class EPJDBC implements IGestorCitesMediques {
             }
             else
             {
+                Persona p;
                 String nif = rs.getString("Persona_NIF");
                 String nom = rs.getString("Persona_Nom");
                 String cognom1 = rs.getString("Persona_Cognom1");
@@ -108,7 +111,11 @@ public class EPJDBC implements IGestorCitesMediques {
                 String sexe = rs.getString("Persona_Sexe");
                 String login = rs.getString("Persona_Login");
                 String pwd = rs.getString("Persona_Password");
-                Persona p = new Persona(nif,nom,cognom1,cognom2,data,adreca,poblacio,sexe.toCharArray()[0],login,pwd);  
+                if(cognom2 != null && !cognom2.isEmpty()){
+                    p = new Persona(nif,nom,cognom1,cognom2,data,adreca,poblacio,sexe.toCharArray()[0],login,pwd);
+                }else{
+                    p = new Persona(nif,nom,cognom1,data,adreca,poblacio,sexe.toCharArray()[0],login,pwd);
+                }  
                 System.out.println("Login correcte");
                 return p;
             }
@@ -150,8 +157,7 @@ public class EPJDBC implements IGestorCitesMediques {
                 {
                     Cita c;
                     int codi_empleat = rs.getInt("Cita_Metge_CodiEmpleat");   
-                    Date data = rs.getDate("descripcio");
-                    int projecte_id = rs.getInt("Cita_DataHora");
+                    Timestamp data = rs.getTimestamp("Cita_DataHora");
                     String informe = rs.getString("Cita_Informe");
                     if(informe != null){
                         c = new Cita(codi_empleat, nif, data, informe);
@@ -181,7 +187,7 @@ public class EPJDBC implements IGestorCitesMediques {
     @Override
     public List<Persona> getMetgeNames() {
         List<Persona> metges = new ArrayList();
-        String query = "select p.* from Metge m"
+        String query = "select p.* from Metge m "
                 + "join Persona p on p.Persona_NIF = m.Metge_Persona_NIF";
         PreparedStatement st = null;
         ResultSet rs = null;
@@ -190,23 +196,36 @@ public class EPJDBC implements IGestorCitesMediques {
                               
             st = con.prepareStatement(query);
             rs = st.executeQuery();
-
-            do
+            if(rs.next()==false)
             {
-            String nif = rs.getString("Persona_NIF");
-            String nom = rs.getString("Persona_Nom");
-            String cognom1 = rs.getString("Persona_Cognom1");
-            String cognom2 = rs.getString("Persona_Cognom2");
-            Date data = rs.getDate("Persona_DataNaix");
-            String adreca = rs.getString("Persona_Adreca");
-            String poblacio = rs.getString("Persona_Poblacio");
-            String sexe = rs.getString("Persona_Sexe");
-            String login = rs.getString("Persona_Login");
-            String pwd = rs.getString("Persona_Password");
-            Persona p = new Persona(nif,nom,cognom1,cognom2,data,adreca,poblacio,sexe.toCharArray()[0],login,pwd);  
-            metges.add(p);
-            }while(rs.next());
-            return metges;
+                System.out.println("No data"); 
+                return null;           
+            }
+            else
+            {
+                do
+                {
+                    Persona p;
+                    String nif = rs.getString("Persona_NIF");
+                    String nom = rs.getString("Persona_Nom");
+                    String cognom1 = rs.getString("Persona_Cognom1");
+                    String cognom2 = rs.getString("Persona_Cognom2");
+                    Date data = rs.getDate("Persona_DataNaix");
+                    String adreca = rs.getString("Persona_Adreca");
+                    String poblacio = rs.getString("Persona_Poblacio");
+                    String sexe = rs.getString("Persona_Sexe");
+                    String login = rs.getString("Persona_Login");
+                    String pwd = rs.getString("Persona_Password");
+                    if(cognom2 != null && !cognom2.isEmpty()){
+                        p = new Persona(nif,nom,cognom1,cognom2,data,adreca,poblacio,sexe.toCharArray()[0],login,pwd);
+                    }else{
+                        p = new Persona(nif,nom,cognom1,data,adreca,poblacio,sexe.toCharArray()[0],login,pwd);
+                    }
+                    metges.add(p);
+                }while(rs.next());
+                return metges;
+            }
+            
         } catch (SQLException ex) {
             throw new IGestorCitesMediquesException("Error en el metode getMetgeNames: "+ex.getMessage());
         }finally {     
@@ -235,14 +254,22 @@ public class EPJDBC implements IGestorCitesMediques {
             st = con.prepareStatement(query);
             rs = st.executeQuery();
 
-            do
+            if(rs.next()==false)
             {
-            String nif = rs.getString("Metge_Persona_NIF");
-            int codiMetge = rs.getInt("Metge_CodiEmpleat");
-            Metge m = new Metge(nif,codiMetge);  
-            metges.add(m);
-            }while(rs.next());
-            return metges;
+                System.out.println("No data"); 
+                return null;           
+            }
+            else
+            {
+                do
+                {
+                String nif = rs.getString("Metge_Persona_NIF");
+                int codiMetge = rs.getInt("Metge_CodiEmpleat");
+                Metge m = new Metge(nif,codiMetge);  
+                metges.add(m);
+                }while(rs.next());
+                return metges;
+        }
         } catch (SQLException ex) {
             throw new IGestorCitesMediquesException("Error en el metode getAllMetges: "+ex.getMessage());
         }finally {     
@@ -271,14 +298,22 @@ public class EPJDBC implements IGestorCitesMediques {
             st = con.prepareStatement(query);
             rs = st.executeQuery();
 
-            do
+            if(rs.next()==false)
             {
-            String nom = rs.getString("Especialitat_Nom");
-            int codi = rs.getInt("Especialitat_Codi");
-            Especialitat e = new Especialitat(codi,nom);  
-            especialitats.add(e);
-            }while(rs.next());
-            return especialitats;
+                System.out.println("No data"); 
+                return null;           
+            }
+            else
+            {
+                do
+                {
+                String nom = rs.getString("Especialitat_Nom");
+                int codi = rs.getInt("Especialitat_Codi");
+                Especialitat e = new Especialitat(codi,nom);  
+                especialitats.add(e);
+                }while(rs.next());
+                return especialitats;
+            }
         } catch (SQLException ex) {
             throw new IGestorCitesMediquesException("Error en el metode getAllEspecialitats: "+ex.getMessage());
         }finally {     
@@ -294,6 +329,87 @@ public class EPJDBC implements IGestorCitesMediques {
             }
         }
     }
+    
+    @Override
+    public List<EntradaHorari> getHorariMetges() {
+        List<EntradaHorari> ehs = new ArrayList();
+        String query = "select * from EntradaHorari";
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try 
+        {
+                              
+            st = con.prepareStatement(query);
+            rs = st.executeQuery();
+
+             if(rs.next()==false)
+            {
+                System.out.println("No data"); 
+                return null;           
+            }
+            else
+            {
+                do
+                {
+                String diaSetmana = rs.getString("EntradaHorari_DiaSetmana");
+                int codiMetge = rs.getInt("Metge_CodiEmpleat");
+                int codiEsp = rs.getInt("Especialitat_Codi");
+                Timestamp hora = rs.getTimestamp("EntradaHorari_Hora");
+                EntradaHorari eh = new EntradaHorari(codiMetge,codiEsp,hora,diaSetmana);  
+                ehs.add(eh);
+                }while(rs.next());
+                return ehs;
+            }
+        } catch (SQLException ex) {
+            throw new IGestorCitesMediquesException("Error en el metode getHorariMetges: "+ex.getMessage());
+        }finally {     
+            try 
+            {
+                if(st!=null)
+                {
+                     st.close();
+                      rs.close();
+                }             
+            } catch (SQLException ex) {
+                throw new IGestorCitesMediquesException("Error en tancar les sentències utilitzada per executar la consulta.", ex);
+            }
+        }
+    }
+    
+    @Override
+    public void deleteCita(Cita cita) {
+        String query = "delete from Cita where Cita_Metge_CodiEmpleat = ? and Cita_Persona_NIF = ? and Cita_DataHora = ?";
+         
+        PreparedStatement st = null;
+     
+        try
+        {         
+            st = con.prepareStatement(query);
+            st.setInt(1, cita.getCodiMetge());
+            st.setString(2, cita.getNif());
+            java.util.Date utilDate = cita.getDataHora();
+            
+            Timestamp timestamp = new Timestamp(utilDate.getTime());
+            st.setTimestamp(3, timestamp);
+            
+            st.executeUpdate();
+            st.close();
+            con.commit();
+        } catch (SQLException ex) {
+            boolean rollback = true;
+            try {
+                con.rollback();
+            } catch (SQLException ex1) {
+                rollback = false;
+            }
+            if (rollback == false) {
+                throw new IGestorCitesMediquesException("Problemes en executar i no s'ha pogut efectuar rollback", ex);
+            } else {
+                throw new IGestorCitesMediquesException("Error en la execucio del metode deleteCita ", ex);
+            }
+        }
+    }
+
     
     @Override
     public Metge getMetge(int codiMetge) {

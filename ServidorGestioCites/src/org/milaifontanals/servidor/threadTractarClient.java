@@ -17,6 +17,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.UUID;
 import org.milaifontanals.classes.Cita;
+import org.milaifontanals.classes.EntradaHorari;
 import org.milaifontanals.classes.Especialitat;
 import org.milaifontanals.classes.Login;
 import org.milaifontanals.classes.Metge;
@@ -87,7 +88,7 @@ public class threadTractarClient extends Thread{
                 if(nif==null)
                 {
                     toClient.writeObject(null);
-                     System.out.println("NULL");
+                    System.out.println("NULL");
                     toClient.flush();
                 }else
                 {
@@ -115,7 +116,19 @@ public class threadTractarClient extends Thread{
                 toClient.writeObject(especialitats);
                 toClient.flush();
                 System.out.println("He enviat " + especialitats.size() + " especialitats");
-            }        
+            }else if(line.equalsIgnoreCase("<<ENTRADAHORARI>>"))
+            {
+                List<EntradaHorari> ehs = igcm.getHorariMetges();
+                toClient.writeObject(ehs);
+                toClient.flush();
+                System.out.println("He enviat " + ehs.size() + " entradaHorari");
+            }else if(line.equalsIgnoreCase("<<DELETE_CITA>>"))
+            {
+                Cita c = (Cita)fromClient.readObject();
+                igcm.deleteCita(c);
+
+                System.out.println("He eliminat la cita correctament");
+            }              
             
         } catch (Exception e) {
             e.printStackTrace();          

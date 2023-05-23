@@ -16,6 +16,14 @@
         android:theme="@style/Theme.GestioCites"
         tools:targetApi="31" >
         <activity
+            android:name=".GestorCitesConcertadesActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".GestorNovaVisitaActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".LoginActivity"
             android:exported="true"
             android:screenOrientation="portrait">

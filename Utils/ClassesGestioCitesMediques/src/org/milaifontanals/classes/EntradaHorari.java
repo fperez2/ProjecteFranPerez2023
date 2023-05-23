@@ -15,23 +15,27 @@ public class EntradaHorari implements Serializable{
     
     protected EntradaHorari(){}
 
-    public EntradaHorari(Metge codiEmpleat, Date hora, String diaSetmana, Especialitat codi) {
-        setCodiEmpleat(codiEmpleat);
-        setHora(hora);
-        setDiaSetmana(diaSetmana);
-        setCodi(codi);
+    public EntradaHorari(int codiMetge, int codiEspecialitat, Date hora, String diaSetmana) {
+        this.codiMetge = codiMetge;
+        this.codiEspecialitat = codiEspecialitat;
+        this.hora = hora;
+        this.diaSetmana = diaSetmana;
     }
 
-    public Metge getCodiEmpleat() {
-        return codiEmpleat;
+    public int getCodiMetge() {
+        return codiMetge;
     }
 
-    public void setCodiEmpleat(Metge codiEmpleat) {
-        if(codiEmpleat==null)
-        {
-            throw new RuntimeException("El codiEmpleat es obligatori.");
-        }
-        this.codiEmpleat = codiEmpleat;
+    public void setCodiMetge(int codiMetge) {
+        this.codiMetge = codiMetge;
+    }
+
+    public int getCodiEspecialitat() {
+        return codiEspecialitat;
+    }
+
+    public void setCodiEspecialitat(int codiEspecialitat) {
+        this.codiEspecialitat = codiEspecialitat;
     }
 
     public Date getHora() {
@@ -39,10 +43,6 @@ public class EntradaHorari implements Serializable{
     }
 
     public void setHora(Date hora) {
-        if(hora==null)
-        {
-            throw new RuntimeException("L'hora es obligatoria.");
-        }
         this.hora = hora;
     }
 
@@ -51,27 +51,16 @@ public class EntradaHorari implements Serializable{
     }
 
     public void setDiaSetmana(String diaSetmana) {
-        if(diaSetmana==null)
-        {
-            throw new RuntimeException("El dia de la setmana es obligatori.");
-        }
         this.diaSetmana = diaSetmana;
-    }
-
-    public Especialitat getCodi() {
-        return codi;
-    }
-
-    public void setCodi(Especialitat codi) {
-        this.codi = codi;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 31 * hash + Objects.hashCode(this.codiEmpleat);
-        hash = 31 * hash + Objects.hashCode(this.hora);
-        hash = 31 * hash + Objects.hashCode(this.diaSetmana);
+        hash = 79 * hash + this.codiMetge;
+        hash = 79 * hash + this.codiEspecialitat;
+        hash = 79 * hash + Objects.hashCode(this.hora);
+        hash = 79 * hash + Objects.hashCode(this.diaSetmana);
         return hash;
     }
 
@@ -87,13 +76,16 @@ public class EntradaHorari implements Serializable{
             return false;
         }
         final EntradaHorari other = (EntradaHorari) obj;
-        if (!Objects.equals(this.codiEmpleat, other.codiEmpleat)) {
+        if (this.codiMetge != other.codiMetge) {
+            return false;
+        }
+        if (this.codiEspecialitat != other.codiEspecialitat) {
+            return false;
+        }
+        if (!Objects.equals(this.diaSetmana, other.diaSetmana)) {
             return false;
         }
         if (!Objects.equals(this.hora, other.hora)) {
-            return false;
-        }
-        if (this.diaSetmana != other.diaSetmana) {
             return false;
         }
         return true;
@@ -101,8 +93,7 @@ public class EntradaHorari implements Serializable{
 
     @Override
     public String toString() {
-        return "EntradaHorari{" + "codiEmpleat=" + codiEmpleat + ", hora=" + hora + ", diaSetmana=" + diaSetmana + ", codi=" + codi + '}';
+        return "EntradaHorari{" + "codiMetge=" + codiMetge + ", codiEspecialitat=" + codiEspecialitat + ", hora=" + hora + ", diaSetmana=" + diaSetmana + '}';
     }
 
-    
 }

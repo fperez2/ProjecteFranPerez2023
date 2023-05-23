@@ -37,6 +37,18 @@ public class Persona implements Serializable{
         setLogin(login);
         setPassword(password);
     }
+    
+        public Persona(String nif, String nom, String cognom1, Date dataNaix, String adreca, String poblacio, char sexe, String login, String password) {
+        setNif(nif);
+        setNom(nom);
+        setCognom1(cognom1);
+        setDataNaix(dataNaix);
+        setAdreca(adreca);
+        setPoblacio(poblacio);
+        setSexe(sexe);
+        setLogin(login);
+        setPassword(password);
+    }
 
     public String getNif() {
         return nif;

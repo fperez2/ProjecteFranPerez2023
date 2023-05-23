@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import org.milaifontanals.classes.Cita;
 import org.milaifontanals.classes.EntradaHorari;
 import org.milaifontanals.classes.Especialitat;
 import org.milaifontanals.classes.Metge;
@@ -248,6 +249,26 @@ public class EPJPA implements IGestorCitesMediques{
 
     @Override
     public Persona login(String user, String password) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Cita> getCites(String nif) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Persona> getMetgeNames() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<EntradaHorari> getHorariMetges() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void deleteCita(Cita cita) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

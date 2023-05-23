@@ -1,7 +1,10 @@
 package org.milaifontanals.gestiocites;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
@@ -25,7 +28,7 @@ import java.util.Map;
 import adapter.AdapterCites;
 import viewModel.GestioViewModel;
 
-public class GestorCitesConcertades extends AppCompatActivity {
+public class GestorCitesConcertadesActivity extends AppCompatActivity {
 
     ActivityCitesBinding binding;
     GestioViewModel vm;
@@ -58,6 +61,8 @@ public class GestorCitesConcertades extends AppCompatActivity {
                 }
             }
         });
+        vm.getAllMetges();
+
         vm.getEspecialitats().observe(this, new Observer<List<Especialitat>>() {
             @Override
             public void onChanged(List<Especialitat> especialitats) {
@@ -67,6 +72,8 @@ public class GestorCitesConcertades extends AppCompatActivity {
                 }
             }
         });
+        vm.getAllEspecialitats();
+
         vm.getPersonesMetges().observe(this, new Observer<List<Persona>>() {
             @Override
             public void onChanged(List<Persona> persones) {
@@ -76,6 +83,8 @@ public class GestorCitesConcertades extends AppCompatActivity {
                 }
             }
         });
+        vm.getAllPersonaMetge();
+
         vm.getEntradaHorari().observe(this, new Observer<List<EntradaHorari>>() {
             @Override
             public void onChanged(List<EntradaHorari> entradaHorari) {
@@ -85,6 +94,14 @@ public class GestorCitesConcertades extends AppCompatActivity {
                 }
             }
         });
+        vm.getAllEntradaHorari();
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         vm.getCites().observe(this, new Observer<List<Cita>>() {
             @Override
             public void onChanged(List<Cita> cites) {
@@ -95,7 +112,7 @@ public class GestorCitesConcertades extends AppCompatActivity {
 
                     cites_persona = new ArrayList<>(cites);
 
-                    AdapterCites v = new AdapterCites(mContext,cites_persona,all_metges,persones_metge,all_especialitats,all_entradaHorari);
+                    AdapterCites v = new AdapterCites(mContext,cites_persona,all_metges,persones_metge,all_especialitats,all_entradaHorari,session_id);
                     binding.rcyCites.setAdapter(v);
 
                 }else {
@@ -104,6 +121,33 @@ public class GestorCitesConcertades extends AppCompatActivity {
                 }
             }
         });
+        vm.getCitesPersona(session_id);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_nova_visita) {
+            Intent intent = new Intent(this, GestorNovaVisitaActivity.class);
+            intent.putExtra("SESSION_ID",session_id);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_logout) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }
