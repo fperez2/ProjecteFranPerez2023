@@ -142,6 +142,9 @@
     <AppxPackagedFile Include="C:\Users\franc\Desktop\ProjecteFranPerez2023\ProjecteFranPerez2023\GestioInformesHorari\GestioInformesHorari\bin\x86\Debug\MainPage.xbf">
       <PackagePath>MainPage.xbf</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\franc\Desktop\ProjecteFranPerez2023\ProjecteFranPerez2023\GestioInformesHorari\GestioInformesHorari\bin\x86\Debug\View\DialogJasperReport.xbf">
+      <PackagePath>View\DialogJasperReport.xbf</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\franc\Desktop\ProjecteFranPerez2023\ProjecteFranPerez2023\GestioInformesHorari\GestioInformesHorari\bin\x86\Debug\View\GestorHorari.xbf">
       <PackagePath>View\GestorHorari.xbf</PackagePath>
     </AppxPackagedFile>

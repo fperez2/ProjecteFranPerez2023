@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReportHistorialPacient_Visites" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="2b1242dc-ecb0-43db-a052-6666f53d163e">
+	<property name="ireport.zoom" value="2.357947691000002"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="nif_pacient" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select CONCAT(p.Persona_Nom, " " , p.Persona_Cognom1, " ", IFNULL(p.Persona_Cognom2, '')) AS nomMetge,
+e.Especialitat_Nom as nomEspecialitat,
+c.Cita_DataHora as dataCita,
+c.Cita_Informe as informe
+from cita c
+join metge m on m.Metge_CodiEmpleat = c.Cita_Metge_CodiEmpleat
+join persona p on m.Metge_Persona_NIF = p.Persona_NIF
+join entradahorari eh on m.Metge_CodiEmpleat = eh.Metge_CodiEmpleat
+and TIME(eh.EntradaHorari_Hora) = TIME(c.Cita_DataHora)
+and CASE
+           WHEN DAYOFWEEK(c.Cita_DataHora) = 1 THEN eh.EntradaHorari_DiaSetmana = 'Diumenge'
+           WHEN DAYOFWEEK(c.Cita_DataHora) = 2 THEN eh.EntradaHorari_DiaSetmana = 'Dilluns'
+           WHEN DAYOFWEEK(c.Cita_DataHora) = 3 THEN eh.EntradaHorari_DiaSetmana = 'Dimarts'
+           WHEN DAYOFWEEK(c.Cita_DataHora) = 4 THEN eh.EntradaHorari_DiaSetmana = 'Dimecres'
+           WHEN DAYOFWEEK(c.Cita_DataHora) = 5 THEN eh.EntradaHorari_DiaSetmana = 'Dijous'
+           WHEN DAYOFWEEK(c.Cita_DataHora) = 6 THEN eh.EntradaHorari_DiaSetmana = 'Divendres'
+           WHEN DAYOFWEEK(c.Cita_DataHora) = 7 THEN eh.EntradaHorari_DiaSetmana = 'Dissabte'
+       END
+join especialitat e on e.Especialitat_Codi = eh.Especialitat_Codi
+where c.Cita_Persona_NIF = $P{nif_pacient}]]>
+	</queryString>
+	<field name="nomMetge" class="java.lang.String"/>
+	<field name="nomEspecialitat" class="java.lang.String"/>
+	<field name="dataCita" class="java.sql.Timestamp"/>
+	<field name="informe" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="21">
+			<staticText>
+				<reportElement uuid="51aa467f-a111-4666-90aa-3ae9021aaaae" x="0" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Data]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ba263ca9-1ca6-46b9-ae11-a0f49ef9058d" x="100" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Metge]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f012eb46-8842-47b5-ba64-5002a86bc0ae" x="200" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Especialitat]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6f0ee329-e50a-4d85-925a-ac5d3d65f08d" x="300" y="0" width="255" height="20"/>
+				<textElement/>
+				<text><![CDATA[Informe]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="6493d821-ce4c-4158-872d-16e1177056e6" x="0" y="20" width="555" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement uuid="4ccc2096-54fd-4313-bfa6-bdf903fab5f0" x="0" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{dataCita}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="78c184f5-875a-4fea-9880-8df82bcad9ea" x="100" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{nomMetge}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5ea0cb74-9291-41c8-8fc4-8fc9ac89ab3d" x="200" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{nomEspecialitat}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="b8413fab-3b51-469a-82d4-2219a4875d1a" x="300" y="0" width="255" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{informe}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="81d39965-789c-48cb-b9bc-9dd6d9a695f8" x="0" y="20" width="555" height="1"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

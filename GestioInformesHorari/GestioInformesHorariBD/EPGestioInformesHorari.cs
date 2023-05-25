@@ -553,5 +553,56 @@ namespace GestioInformesHorariBD
                 }
             }
         }
+
+        public List<Persona> GetAllPacients()
+        {
+            try
+            {
+                using (MyDBContext context = new MyDBContext())
+                {
+                    using (var connexio = context.Database.GetDbConnection())
+                    {
+                        connexio.Open();
+
+                        using (DbCommand consulta = connexio.CreateCommand())
+                        {
+
+                            consulta.CommandText = $@"select * from persona order by Persona_Cognom1,Persona_Nom asc";
+
+                            DbDataReader reader = consulta.ExecuteReader();
+
+                            List<Persona> pacients = new List<Persona>();
+                            while (reader.Read())
+                            {
+                                String nif = reader.GetString(reader.GetOrdinal("Persona_NIF"));
+                                String cognom2 = null;
+                                String nom = reader.GetString(reader.GetOrdinal("Persona_Nom"));
+                                String cognom1 = reader.GetString(reader.GetOrdinal("Persona_Cognom1"));
+                                if (!reader.IsDBNull(reader.GetOrdinal("Persona_Cognom2")))
+                                {
+                                    cognom2 = reader.GetString(reader.GetOrdinal("Persona_Cognom2"));
+                                }
+
+                                DateTime data = reader.GetDateTime(reader.GetOrdinal("Persona_DataNaix"));
+                                String adreca = reader.GetString(reader.GetOrdinal("Persona_Adreca"));
+                                String poblacio = reader.GetString(reader.GetOrdinal("Persona_Poblacio"));
+                                String sexe = reader.GetString(reader.GetOrdinal("Persona_Sexe"));
+                                String login = reader.GetString(reader.GetOrdinal("Persona_Login"));
+                                String pass = reader.GetString(reader.GetOrdinal("Persona_Password"));
+                                
+                                Persona p = new Persona(nif, nom, cognom1, (cognom2 != null ? cognom2 : " "), data,adreca,poblacio,sexe[0],login,pass);
+                                pacients.Add(p);
+                            }
+                            return pacients;
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return null;
+        }
     }
 }

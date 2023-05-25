@@ -101,3 +101,8 @@ C:\Users\franc\Desktop\ProjecteFranPerez2023\ProjecteFranPerez2023\GestioInforme
 C:\Users\franc\Desktop\ProjecteFranPerez2023\ProjecteFranPerez2023\GestioInformesHorari\GestioInformesHorari\obj\x86\Debug\resources.en-us.resfiles.intermediate
 C:\Users\franc\Desktop\ProjecteFranPerez2023\ProjecteFranPerez2023\GestioInformesHorari\GestioInformesHorari\obj\x86\Debug\ProjectArchitectures.txt
 C:\Users\franc\Desktop\ProjecteFranPerez2023\ProjecteFranPerez2023\GestioInformesHorari\GestioInformesHorari\obj\x86\Debug\.winmd_cache\$Microsoft.UI.Xaml.Markup.winmd_637424743200000000.json
+C:\Users\franc\Desktop\ProjecteFranPerez2023\ProjecteFranPerez2023\GestioInformesHorari\GestioInformesHorari\obj\x86\Debug\View\DialogJasperReport.g.i.cs
+C:\Users\franc\Desktop\ProjecteFranPerez2023\ProjecteFranPerez2023\GestioInformesHorari\GestioInformesHorari\obj\x86\Debug\View\DialogJasperReport.g.cs
+C:\Users\franc\Desktop\ProjecteFranPerez2023\ProjecteFranPerez2023\GestioInformesHorari\GestioInformesHorari\obj\x86\Debug\View\DialogJasperReport.xaml
+C:\Users\franc\Desktop\ProjecteFranPerez2023\ProjecteFranPerez2023\GestioInformesHorari\GestioInformesHorari\obj\x86\Debug\View\DialogJasperReport.xbf
+C:\Users\franc\Desktop\ProjecteFranPerez2023\ProjecteFranPerez2023\GestioInformesHorari\GestioInformesHorari\bin\x86\Debug\View\DialogJasperReport.xbf

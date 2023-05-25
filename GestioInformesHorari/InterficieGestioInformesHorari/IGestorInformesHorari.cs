@@ -19,5 +19,6 @@ namespace InterficieGestioInformesHorari
         void InsertEntradaHorari(EntradaHorari eh);
         void UpdateEntradaHorari(EntradaHorari oldEH, EntradaHorari newEH);
         void DeleteEntradaHorari(EntradaHorari eh);
+        List<Persona> GetAllPacients();
     }
 }

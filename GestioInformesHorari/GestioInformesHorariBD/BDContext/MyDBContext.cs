@@ -1,7 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GestioInformesHorariBD.BDContext
 {
@@ -9,8 +6,7 @@ namespace GestioInformesHorariBD.BDContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
         {
-            optionBuilder.UseMySQL("Server=127.0.0.1;Database=projecte2023;UID=fran;Password=fran;SslMode=none");
-
+            optionBuilder.UseMySQL("Server=51.68.224.27;Database=dam2_fperez2;UID=dam2_fperez2;Password=1025A;SslMode=none");
         }
     }
 }

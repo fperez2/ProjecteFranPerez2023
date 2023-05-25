@@ -23,6 +23,11 @@
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE70F;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+                <NavigationViewItem Tag="Report"  Content="Generar Historial Pacient">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE9F9;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
             <Frame x:Name="frmPrincipal"></Frame>
         </NavigationView>

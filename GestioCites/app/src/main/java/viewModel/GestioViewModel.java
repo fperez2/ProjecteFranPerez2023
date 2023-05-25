@@ -39,7 +39,7 @@ public class GestioViewModel extends AndroidViewModel {
     private MutableLiveData<List<EntradaHorari>> entradaHorari;
     private MutableLiveData<List<String>> forats;
 
-    private String IP = "192.168.81.60"; //10.200.1.21 //192.168.1.29 //192.168.81.60
+    private String IP = "10.200.1.21"; //10.200.1.21 //192.168.1.29 //192.168.81.60
     private int PORT = 10000;
 
     public GestioViewModel(@NonNull Application application) {

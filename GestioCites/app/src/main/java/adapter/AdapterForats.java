@@ -55,7 +55,7 @@ public class AdapterForats extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             int color = ContextCompat.getColor(mContext, R.color.teal_200);
             holder.itemView.setBackgroundColor(color);
         } else {
-            int color = ContextCompat.getColor(mContext, R.color.teal_700);
+            int color = ContextCompat.getColor(mContext, R.color.cyan);
             holder.itemView.setBackgroundColor(color);
         }
 

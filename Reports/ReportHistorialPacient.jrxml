@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReportHistorialPacient" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d9f49fe4-86c2-4a7a-96f4-f3c3d66abcb5">
+	<property name="ireport.zoom" value="3.1384283767210035"/>
+	<property name="ireport.x" value="80"/>
+	<property name="ireport.y" value="12"/>
+	<property name="ireport.jasperserver.reportUnit" value="/dam2_fperez2/reports/HistorialPacients"/>
+	<property name="ireport.jasperserver.url" value="http://51.68.224.27:8080/jasperserver/services/repository"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\franc\\Desktop\\ProjecteFranPerez2023\\ProjecteFranPerez2023\\Reports\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nif_pacient" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select Persona_NIF as nif,
+CONCAT(Persona_Nom, " " , Persona_Cognom1, " ", IFNULL(Persona_Cognom2, '')) AS nom,
+Persona_DataNaix as dataNaix,
+CONCAT(Persona_Adreca, ", ", Persona_Poblacio) AS adreca,
+    CASE Persona_Sexe
+        WHEN 'M' THEN 'Home'
+        WHEN 'F' THEN 'Dona'
+    END AS sexe
+from persona where Persona_NIF = $P{nif_pacient}]]>
+	</queryString>
+	<field name="nif" class="java.lang.String"/>
+	<field name="nom" class="java.lang.String"/>
+	<field name="dataNaix" class="java.sql.Date"/>
+	<field name="adreca" class="java.lang.String"/>
+	<field name="sexe" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="51" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="785812c3-0e68-43fc-b869-d7bf2a76bc38" x="162" y="0" width="180" height="44"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Historial Pacient]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="f9b5caf0-6c72-45fa-84a9-4aeec56df735" x="0" y="50" width="555" height="1"/>
+			</line>
+			<image>
+				<reportElement uuid="82099502-fc0b-4c9c-ba89-65e8208d5a94" x="0" y="0" width="162" height="44"/>
+				<imageExpression><![CDATA["repo:LogoMilaInformatica.gif"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="47" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="38772b32-69fe-4a7e-91f6-242b7a6ee12c" x="0" y="0" width="23" height="20"/>
+				<textElement/>
+				<text><![CDATA[NIF:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="41273aee-b5de-4485-aa32-86f47ff5628f" x="23" y="0" width="54" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{nif}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="e4df2a67-59c0-40ec-b201-fa157edc4d2e" x="372" y="0" width="37" height="20"/>
+				<textElement/>
+				<text><![CDATA[Adreça:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="5f9fb6f7-6d75-4eb1-bbb2-0c25a53e0698" x="409" y="0" width="146" height="41"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{adreca}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="b4ea1b89-5917-42f8-8cb2-d0e13eb10184" x="177" y="21" width="33" height="20"/>
+				<textElement/>
+				<text><![CDATA[Sexe:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="cc94c1a8-c784-4e59-88d1-c986ed0cb3ff" x="210" y="21" width="99" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{sexe}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="a8a47123-6d8d-4e17-b271-90209a30c726" x="0" y="21" width="77" height="20"/>
+				<textElement/>
+				<text><![CDATA[Data Naixement: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="d707ce4b-8759-4c5e-8fc6-0358b738e45d" x="77" y="21" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{dataNaix})]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="0a378381-7506-4bc7-a982-2a4c02ccd5f7" x="0" y="40" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="79d1b14b-1333-4c6b-93d5-32333b1ccfd9" x="177" y="0" width="33" height="20"/>
+				<textElement/>
+				<text><![CDATA[Nom:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="b19081e9-b345-4be3-b7cb-0f5558e767d2" x="210" y="0" width="142" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{nom}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<subreport>
+				<reportElement uuid="580c5dad-a38f-44bf-a886-c6a4b7d02355" x="0" y="0" width="555" height="125"/>
+				<subreportParameter name="nif_pacient">
+					<subreportParameterExpression><![CDATA[$P{nif_pacient}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["repo:ReportHistorialPacient_Visites.jrxml"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="d9c4b190-c774-4258-9b2d-ecfe3f50a97c" x="436" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="a0eec6ff-bf4d-40cb-bab6-8ca7af443647" x="516" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="60145cd0-2f7e-460f-9124-3b0c58083dfe" x="0" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

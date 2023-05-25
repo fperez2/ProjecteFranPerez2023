@@ -71,7 +71,7 @@ public class AdapterCites extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             int color = ContextCompat.getColor(mContext, R.color.teal_200);
             holder.itemView.setBackgroundColor(color);
         } else {
-            int color = ContextCompat.getColor(mContext, R.color.teal_700);
+            int color = ContextCompat.getColor(mContext, R.color.cyan);
             holder.itemView.setBackgroundColor(color);
         }
 
@@ -85,7 +85,7 @@ public class AdapterCites extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         dataCitaC.setTime(dataCita);
         int horaCita = dataCitaC.get(Calendar.HOUR_OF_DAY);
         int minutCita = dataCitaC.get(Calendar.MINUTE);
-
+        horaCita = horaCita +2;
         holder.textViewData.setText(formatData.format(dataCita));
         holder.textViewHora.setText((horaCita < 10  ? "0" + horaCita : horaCita) + ":" + (minutCita == 0 ? minutCita + "0" : minutCita));
         holder.textViewEspecialitat.setText(nom_especialitat);

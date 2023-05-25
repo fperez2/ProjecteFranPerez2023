@@ -17,7 +17,7 @@
        
         <properties>
             <property name="javax.persistence.jdbc.url" 
-                      value="jdbc:mysql://127.0.0.1:3306/projecte2023?serverTimezone=UTC"/>
+                      value="jdbc:mysql://127.0.0.1:3306/projecte2023?serverTimezone=Europe/Paris"/>
             <property name="javax.persistence.jdbc.user" value="fran"/>
             <property name="javax.persistence.jdbc.password" value="fran"/>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

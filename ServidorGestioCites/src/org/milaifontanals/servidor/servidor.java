@@ -24,7 +24,7 @@ public class servidor {
                 
         try 
         {
-            addr = InetAddress.getByName("192.168.81.60"); //10.200.1.21 //192.168.1.29 //192.168.81.60
+            addr = InetAddress.getByName("10.200.1.21"); //10.200.1.21 //192.168.1.29 //192.168.81.60
             serverSocket = new ServerSocket(10000,50,addr);
         } catch (IOException e) {
             e.printStackTrace();

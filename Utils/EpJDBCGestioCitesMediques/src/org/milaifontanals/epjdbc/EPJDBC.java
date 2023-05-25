@@ -176,14 +176,15 @@ public class EPJDBC implements IGestorCitesMediques {
                     Cita c;
                     int codi_empleat = rs.getInt("Cita_Metge_CodiEmpleat");   
                     Timestamp data = rs.getTimestamp("Cita_DataHora");
+                    java.util.Date date = new java.util.Date(data.getTime());
                     String informe = rs.getString("Cita_Informe");
                     String nom_Metge = rs.getString("Persona_Nom");
                     String cognom_Metge = rs.getString("Persona_Cognom1");
                     String nom_Especialitat = rs.getString("Especialitat_Nom");
                     if(informe != null){
-                        c = new Cita(codi_empleat, nif, data, informe, nom_Metge + cognom_Metge, nom_Especialitat);
+                        c = new Cita(codi_empleat, nif, date, informe, nom_Metge + cognom_Metge, nom_Especialitat);
                     }else{
-                        c = new Cita(codi_empleat, nif, data, nom_Metge + cognom_Metge, nom_Especialitat);
+                        c = new Cita(codi_empleat, nif, date, nom_Metge + cognom_Metge, nom_Especialitat);
                     }
                     cites.add(c);              
                 }while(rs.next());
@@ -484,11 +485,7 @@ public class EPJDBC implements IGestorCitesMediques {
                 do
                 {
                 Timestamp hora = rs.getTimestamp("EntradaHorari_Hora");
-                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime(hora);
-                calendar.add(Calendar.HOUR_OF_DAY, -1);
-                Timestamp horaRestada = new Timestamp(calendar.getTimeInMillis());
-                ehs.add(sdf.format(horaRestada));
+                ehs.add(sdf.format(hora));
                 }while(rs.next());
                 return ehs;
             }
@@ -519,10 +516,7 @@ public class EPJDBC implements IGestorCitesMediques {
             st = con.prepareStatement(query);
             st.setInt(1, codiMetge);
             st.setString(2, nif);
-            LocalTime horaL = LocalTime.parse(hora, DateTimeFormatter.ofPattern("HH:mm"));
-            LocalTime horanova = horaL.plusHours(2);
-            String horanovaS = horanova.format(DateTimeFormatter.ofPattern("HH:mm"));
-            String dataHoraString = date.toString() + " " + horanovaS;
+            String dataHoraString = date.toString() + " " + hora;
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             java.util.Date dataHora = dateFormat.parse(dataHoraString);
             

@@ -31,6 +31,8 @@
                     <cascade-persist/>
                 </cascade>
             </many-to-one>
+            <transient name="nom_Especialitat"/>
+            <transient name="nom_Metge"/>
         </attributes>
     </entity>
 </entity-mappings>

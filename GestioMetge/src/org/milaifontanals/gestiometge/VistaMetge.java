@@ -155,17 +155,15 @@ public class VistaMetge extends JFrame {
                     String especialitatSeleccionada = (String) comboBoxEspecialitats2.getSelectedItem();
                     boolean asignarEspecialitat = obj.addEspecialitatToMetge(codiMetgeFilaSelec, especialitatSeleccionada);
                     
-                    especialitatSeleccionada = (String) comboBoxEspecialitats.getSelectedItem();
-                    List<Metge> metgesFiltrats;
-                    if(especialitatSeleccionada.equals("")){
-                        metgesFiltrats = obj.getAllMetges();
-                    }else{
-                        metgesFiltrats = obj.getMetgesByEspecialitat(especialitatSeleccionada); 
+                    filaSeleccionada = tableMetges.getSelectedRow();
+                if (filaSeleccionada >= 0) {
+                    codiMetgeFilaSelec = (int) modelMetges.getValueAt(filaSeleccionada, 0);
+                    List<Especialitat> metgeEspecialitats = obj.getEspecialitatByMetge(codiMetgeFilaSelec);
+                    modelEspecialitats.clear();
+                    if(!metgeEspecialitats.isEmpty()){
+                    metgeEspecialitats.forEach(me -> modelEspecialitats.addElement(me.getNom()));
                     }
-                    modelMetges.setRowCount(0);
-                    if(!metgesFiltrats.isEmpty()){
-                        metgesFiltrats.forEach(mf -> modelMetges.addRow(new Object[]{mf.getCodiEmpleat(), mf.getNom()}));
-                    }
+                }
                 } else {
                     JOptionPane.showMessageDialog(VistaMetge.this, "Seleccione un médico de la lista", "Error", JOptionPane.ERROR_MESSAGE);
                 }

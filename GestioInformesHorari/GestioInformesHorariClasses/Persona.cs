@@ -57,7 +57,7 @@ namespace GestioInformesHorariClasses
 
         public override string ToString()
         {
-            return nom + " " + cognom1;
+            return nif + " - " + nom + " " + cognom1;
         }
 
     }

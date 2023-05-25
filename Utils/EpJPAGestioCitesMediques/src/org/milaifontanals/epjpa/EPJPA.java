@@ -3,6 +3,7 @@ package org.milaifontanals.epjpa;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -162,6 +163,7 @@ public class EPJPA implements IGestorCitesMediques{
             return true;
         }catch(Exception ex)
         {
+            em.getTransaction().rollback();
             throw new IGestorCitesMediquesException("Error addEspecialitatToMetge: "+ex.getMessage()); 
         }
     }
@@ -269,6 +271,16 @@ public class EPJPA implements IGestorCitesMediques{
 
     @Override
     public void deleteCita(Cita cita) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<String> getForats(Date date, int codiMetge, int codiEsp) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void reservarCita(String nif, Date date, int codiMetge, String hora) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -38,6 +39,11 @@ namespace GestioInformesHorari.View.MyViewModel
 
         private void NvwBarraNavegacio_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
+            if (args.InvokedItemContainer.Tag.ToString().Equals("Report"))
+            {
+                openJasperAsync();
+                return;
+            }
             Type t = typeof(GestorInformes);
 
             switch (args.InvokedItemContainer.Tag.ToString())
@@ -53,7 +59,14 @@ namespace GestioInformesHorari.View.MyViewModel
 
             }
             frmPrincipal.Navigate(t, codiMetge);
+
+ 
         }
 
+        private async Task openJasperAsync()
+        {
+            DialogJasperReport jsp = new DialogJasperReport();
+            await jsp.ShowAsync();
+        }
     }
 }
